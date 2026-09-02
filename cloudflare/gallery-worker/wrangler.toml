@@ -1,0 +1,15 @@
+name = "mekousai-gallery-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[vars]
+ALLOWED_ORIGINS = "https://branzfamily01.github.io"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "mekousai-79-media"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mekousai-79-gallery"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"

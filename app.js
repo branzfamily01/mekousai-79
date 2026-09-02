@@ -170,3 +170,92 @@
     if (document.visibilityState === 'hidden') persist();
   });
 })();
+
+// Photo journal links + live Cloudflare gallery summary.
+(() => {
+  const cardMap = new Map([
+    ['準備風景', 'preparation'],
+    ['制作の手元', 'creation'],
+    ['放課後', 'after-school'],
+    ['リハーサル', 'rehearsal'],
+    ['開催直前', 'final-prep'],
+    ['文化祭当日', 'festival-day'],
+    ['表彰・振り返り', 'awards'],
+  ]);
+
+  const style = document.createElement('link');
+  style.rel = 'stylesheet';
+  style.href = 'gallery-system.css';
+  document.head.appendChild(style);
+
+  const targets = [];
+  document.querySelectorAll('.photo-entry, .future-chapters article').forEach((node) => {
+    const title = node.querySelector('h3')?.textContent.trim();
+    const category = cardMap.get(title);
+    if (!category) return;
+    node.classList.add('photo-gallery-link');
+    node.dataset.galleryCategory = category;
+    node.setAttribute('role', 'link');
+    node.tabIndex = 0;
+    const go = () => { location.href = `gallery.html?category=${encodeURIComponent(category)}`; };
+    node.addEventListener('click', (event) => { if (!event.target.closest('a,button,input,select,textarea')) go(); });
+    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); go(); } });
+    if (node.classList.contains('photo-entry')) {
+      const caption = node.querySelector('.photo-caption');
+      if (caption && !caption.querySelector('.gallery-open-label')) {
+        const label = document.createElement('span');
+        label.className = 'gallery-open-label';
+        label.innerHTML = '写真を見る <b aria-hidden="true">↗</b>';
+        caption.appendChild(label);
+      }
+    }
+    targets.push(node);
+  });
+
+  if (!targets.length) return;
+  const hydrate = () => {
+    const cfg = window.MEKOUSAI_CONFIG || {};
+    const apiBase = String(cfg.apiBase || '').replace(/\/$/, '');
+    if (!apiBase || apiBase.includes('REPLACE-WITH-WORKER')) return;
+    fetch(`${apiBase}/api/categories`, { headers: { Accept: 'application/json' } })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then((payload) => {
+        const summaries = new Map((payload.categories || []).map((item) => [item.category, item]));
+        targets.forEach((target) => {
+          const item = summaries.get(target.dataset.galleryCategory);
+          if (!item || !item.count) return;
+          target.classList.add('has-gallery-items');
+          const existing = target.querySelector('.gallery-count');
+          if (existing) existing.textContent = `${item.count} PHOTOS`;
+          else {
+            const count = document.createElement('small');
+            count.className = 'gallery-count';
+            count.textContent = `${item.count} PHOTOS`;
+            (target.querySelector('.empty-photo') || target).appendChild(count);
+          }
+          const cover = target.querySelector('.empty-photo');
+          if (cover && item.coverUrl) {
+            cover.classList.add('gallery-cover', 'has-cover-image');
+            cover.textContent = '';
+            const img = document.createElement('img');
+            img.src = item.coverUrl;
+            img.alt = '';
+            img.loading = 'lazy';
+            const badge = document.createElement('small');
+            badge.className = 'gallery-count';
+            badge.textContent = `${item.count} PHOTOS`;
+            cover.append(img, badge);
+          }
+        });
+      })
+      .catch(() => {});
+  };
+  if (window.MEKOUSAI_CONFIG) hydrate();
+  else {
+    const script = document.createElement('script');
+    script.src = 'site-config.js';
+    script.onload = hydrate;
+    script.onerror = () => {};
+    document.head.appendChild(script);
+  }
+})();
