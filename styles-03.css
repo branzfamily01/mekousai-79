@@ -1,0 +1,19 @@
+.volume-control { min-width: 0; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 7px; font-size: 9px; font-weight: 900; }
+.volume-control input { width: 100%; accent-color: var(--ink); cursor: pointer; }
+.volume-control output { min-width: 30px; text-align: right; font-size: 9px; }
+.cassette-close { width: 30px; height: 30px; position: absolute; top: 10px; right: 10px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper-light); color: var(--ink); font: 900 19px/1 var(--font-body); cursor: pointer; }
+.cassette-pencil-note { display: block; margin-top: 14px; text-align: right; font-family: var(--font-hand); font-size: 10px; transform: rotate(-2deg); opacity: .75; }
+
+@media (max-width: 620px) {
+  .bgm-dock { right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); }
+  .bgm-toggle { min-height: 46px; padding-inline: 11px 14px; }
+  .cassette-player { width: min(306px, calc(100vw - 24px)); padding: 20px 16px 16px; }
+  .cassette-controls { grid-template-columns: 84px 1fr; gap: 9px; }
+  .cassette-window { grid-template-columns: 52px 1fr 52px; gap: 8px; padding-inline: 10px; }
+  .cassette-reel { width: 42px; height: 42px; }
+  .cassette-label strong { font-size: 19px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cassette-reel.is-spinning { animation: none; }
+}
