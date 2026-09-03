@@ -2,62 +2,78 @@
 
 ## 採用構成
 
-1つの **Cloudflare Worker (`mekousai-79`)** で、公開サイトと写真APIを同一Origin配信する。
+1つの **Cloudflare Worker (`mekousai-79`)** で、公開サイトと写真APIを同一Origin配信します。
 
-- Static Assets: `index.html`, `programs.html`, `gallery.html`, `editor.html`, CSS/JS/画像/BGM
+- Static Assets: 公開HTML / CSS / JS / 画像 / BGM
 - Worker API: `/api/*`
 - Photo delivery: `/media/*`
 - R2: `mekousai-79-media`（写真本体）
 - D1: `mekousai-79-gallery`（写真台帳）
 - Secrets: `EDITOR_PASSCODE`, `SESSION_SECRET`
 
-Netlify / GitHub Pages は本番配信には不要。GitHubは正本と自動デプロイ元として残す。
+GitHubは正本と自動デプロイ元として残します。Netlify / GitHub Pages は本番配信には不要です。
 
-## 推奨：Deploy to Cloudflare で一括作成
+## 重要：Deploy to Cloudflareボタンは使わない
 
-READMEの **Deploy to Cloudflare** ボタンから進む。
+このリポジトリはすでに `branzfamily01/mekousai-79` として存在しています。Deploy to Cloudflareボタンはテンプレートを新しいGitHubリポジトリへ複製する仕組みのため、同名リポジトリ競合が起こります。
 
-Cloudflareが `wrangler.toml` を読み、以下を自動プロビジョニング・bindingする構成にしてある。
+**Cloudflare Dashboardから既存リポジトリを直接Importしてください。**
 
-- R2 bucket `mekousai-79-media`
-- D1 database `mekousai-79-gallery`
-- Worker `mekousai-79`
-- Static Assets
+## 初回作業（Cloudflare Dashboard）
 
-D1 migrationも `npm run deploy` の中で自動適用される。
+1. Workers & Pages → Create application
+2. **Import a repository** を選択
+3. GitHubの `branzfamily01/mekousai-79` を選択
+4. Worker / Project name: `mekousai-79`
+5. Production branch: `main`
+6. Root directory: repository root
+7. Build command: 空欄
+8. Deploy command: `npm run deploy`
+9. Save and Deploy
 
-設定途中でSecretの入力を求められたら、以下を入力する。
+`npm run deploy` は以下を自動実行します。
 
-- `EDITOR_PASSCODE`: 編集画面用パスコード
-- `SESSION_SECRET`: 32文字以上を目安にした十分長いランダム文字列
+- 公開サイト用ファイルだけを `.cloudflare-static` にまとめる
+- D1 `mekousai-79-gallery` が無ければ作成
+- R2 `mekousai-79-media` が無ければ Standard で作成
+- 実際のD1 Database IDを取得して一時Wrangler設定を生成
+- D1 migrationを適用
+- Static Assets + Worker API + D1 + R2 bindingをまとめてdeploy
 
-Secretの実値はGitHubへコミットしない。
+したがって、通常はD1 IDを手作業でGitHubへ書き込む必要はありません。
 
-## Deploy後の確認
+## Secrets（初回deploy後に設定）
 
-本番URLで次を確認する。
+Cloudflare Dashboard → Worker `mekousai-79` → Settings → Variables and Secrets で次を登録します。
 
-1. `/` が表示される
-2. `/programs.html` が表示される
-3. `/api/health` が `{ "ok": true, ... }`
-4. `/editor.html` でログインできる
-5. iPhoneから「準備風景」に写真を3枚アップロード
-6. `/gallery.html?category=preparation` に3枚表示
-7. 代表写真を変更できる
-8. 公開→非公開→再公開できる
-9. 1枚削除できる
+- `EDITOR_PASSCODE`: 写真編集ページで担当者が入力するパスコード
+- `SESSION_SECRET`: セッション署名用の十分長いランダム文字列
 
-## 写真追加の日常運用
+値はGitHubへコミットしません。`SESSION_SECRET` に既にCloudflare側で値が入っている場合は、サンプル値でなければそのままで構いません。
 
-本番化後は `editor.html` をiPhoneで開くだけ。
+Secrets設定後、Workerを再deployするか、GitHubの `main` へ新しいcommitをpushして再buildしてください。
+
+## 動作確認
+
+本番URLで次を確認します。
+
+- `/` が表示される
+- `/programs.html` が表示される
+- `/api/health` が `{ "ok": true, ... }` を返す
+- `/editor.html` でログインできる
+- iPhoneから写真を3枚アップロード
+- `/gallery.html?category=preparation` に3枚表示される
+- 代表写真変更
+- 非公開 → 再公開
+- 1枚削除
+
+## 日常の写真追加
+
+本番化後は `editor.html` をiPhoneで開くだけです。
 
 1. パスコードでログイン
-2. 複数写真を選ぶ
+2. 複数写真を選択
 3. カテゴリ・日付・コメントを指定
 4. 公開
 
-GitHub / Cloudflare Dashboard / ChatGPTを毎回触る必要はない。
-
-## もしDeploy to Cloudflareを使わない場合
-
-手動でも可能だが、R2作成、D1作成、binding、migration、Secrets設定、Workers Builds接続を個別に行う必要がある。文化祭直前のため、原則として一括Deployを推奨する。
+写真追加のたびにGitHub / Cloudflare Dashboard / ChatGPTを触る必要はありません。
