@@ -1,5 +1,4 @@
 @import url('programs-base.css');
 @import url('programs-images-classes.css');
 @import url('programs-images-others.css');
-.sprite-classes{background-size:400% 500%;}
-.sprite-others{background-size:500% 600%;}
+/* sprite layout: classes 3×6 / others 3×9 */
