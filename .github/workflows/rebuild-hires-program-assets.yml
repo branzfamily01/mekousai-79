@@ -1,0 +1,50 @@
+name: Rebuild high-resolution program assets
+
+on:
+  push:
+    branches:
+      - upload-hires-assets
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild AVIF sprites and verify bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat asset-staging/classes/part-* > /tmp/classes.b64
+          cat asset-staging/others/part-* > /tmp/others.b64
+          base64 --decode /tmp/classes.b64 > program-classes-sprite.avif
+          base64 --decode /tmp/others.b64 > program-others-sprite.avif
+          test "$(stat -c%s program-classes-sprite.avif)" = "77398"
+          test "$(stat -c%s program-others-sprite.avif)" = "70373"
+          file program-classes-sprite.avif
+          file program-others-sprite.avif
+
+      - name: Point the program finder to AVIF assets
+        shell: bash
+        run: |
+          printf "%s\n" ":root{--class-sprite:url('program-classes-sprite.avif');}" > programs-images-classes.css
+          printf "%s\n" ":root{--other-sprite:url('program-others-sprite.avif');}" > programs-images-others.css
+          rm -rf asset-staging
+
+      - name: Commit rebuilt binary assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add program-classes-sprite.avif program-others-sprite.avif programs-images-classes.css programs-images-others.css asset-staging
+          git commit -m "Replace low-resolution program sprites with PDF-source AVIF assets"
+          git push origin HEAD:upload-hires-assets
