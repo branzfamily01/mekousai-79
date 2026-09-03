@@ -58,10 +58,10 @@
       id: 'c-english-quest', group: 'English Club', groupType: '部活動', sourceGenre: 'スタンプラリー', title: 'English Quest',
       description: '怪盗アルセーヌ・ルパンに盗まれた学校の宝物を追い、校内のヒントをたどりながらスタンプを集め、秘密の場所を見つけるスタンプラリーです。すべてのスタンプを集めて、隠された場所を探し出そう！',
       venue: '4階自習エリア', webCategory: 'English Club', sprite: null, spriteIndex: 0,
-      customImage: window.MEKOUSAI_ENGLISH_QUEST_IMAGE || '', note: ''
+      customImage: 'english-quest.webp?v=20260904-1', note: ''
     });
   } else {
-    patch('c-english-quest', { customImage: window.MEKOUSAI_ENGLISH_QUEST_IMAGE || byId.get('c-english-quest').customImage || '' });
+    patch('c-english-quest', { customImage: 'english-quest.webp?v=20260904-1' });
   }
 
   if (!byId.has('v-dance26')) {
