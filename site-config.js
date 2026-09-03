@@ -1,6 +1,7 @@
 window.MEKOUSAI_CONFIG = Object.freeze({
-  // Cloudflare Worker deployment後、この1行だけ実URLへ変更します。
-  apiBase: "https://REPLACE-WITH-WORKER.workers.dev"
+  // Cloudflare Workers Static Assets では公開サイトと写真APIを同一Originで配信する。
+  // Netlify/GitHub Pages時代の固定workers.dev URLは不要。
+  apiBase: window.location.origin
 });
 
 (() => {
