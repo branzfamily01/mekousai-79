@@ -1,0 +1,12 @@
+{
+  "name": "mekousai-79",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute mekousai-79-gallery --remote --file=cloudflare/gallery-worker/schema.sql",
+    "cf:check": "wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
