@@ -20,13 +20,26 @@
   }
 
   function addVisual(card, item) {
-    const visual = document.createElement('div');
     if (item.customImage) {
+      const visual = document.createElement('div');
       visual.className = 'program-visual custom-program-image';
-      visual.style.backgroundImage = `url("${item.customImage}")`;
-      visual.style.backgroundSize = 'cover';
-      visual.style.backgroundPosition = 'center';
-    } else if (item.sprite) {
+      const img = document.createElement('img');
+      img.src = item.customImage;
+      img.alt = `${item.group} ${item.title} 企画ビジュアル`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.display = 'block';
+      img.style.objectFit = 'cover';
+      img.style.objectPosition = 'center';
+      visual.appendChild(img);
+      card.appendChild(visual);
+      return;
+    }
+
+    const visual = document.createElement('div');
+    if (item.sprite) {
       visual.className = `program-visual sprite-${item.sprite}`;
       const cols = 3, rows = item.sprite === 'classes' ? 6 : 9, p = pos(item.spriteIndex, cols, rows);
       visual.style.setProperty('--bx', p.bx);
