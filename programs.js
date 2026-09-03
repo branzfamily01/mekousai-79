@@ -20,9 +20,8 @@
   }
 
   function addVisual(card, item) {
-    const customImage = item.id === 'c-english-quest'
-      ? 'english-quest.webp?v=20260904-1'
-      : (item.customImage || '');
+    /* English Questもitem/custom globalの高精細画像を優先。旧10KB webpの強制指定は禁止。 */
+    const customImage = item.customImage || (item.id === 'c-english-quest' ? (window.MEKOUSAI_ENGLISH_QUEST_IMAGE || '') : '');
 
     if (customImage) {
       const visual = document.createElement('div');
