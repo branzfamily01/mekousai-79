@@ -5,6 +5,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 });
 
 (() => {
+  const VERSION = '20260903-mobile-ui-1';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
@@ -12,7 +13,17 @@ window.MEKOUSAI_CONFIG = Object.freeze({
     script.defer = true;
     document.head.appendChild(script);
   };
-  load('site-corrections.js');
+  const loadCss = (href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  };
+
+  // iPhone/Safariで旧CSS・旧JSが残らないよう、今回のUI修正版だけversion queryを付ける。
+  loadCss(`styles-07.css?v=${VERSION}`);
+  load(`site-corrections.js?v=${VERSION}`);
   load('site-remove-chorus.js');
-  load('bgm-player-v2.js');
+  load(`bgm-player-v2.js?v=${VERSION}`);
 })();
