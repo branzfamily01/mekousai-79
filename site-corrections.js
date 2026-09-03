@@ -11,11 +11,11 @@
       img.alt = '第79回目高祭 公式プログラム表紙';
     });
 
-    // 長い見出しが不自然に3段以上へ割れないよう、改行を外してバランス調整する。
+    // 長い見出しが不自然に3段以上へ割れないよう、文言と改行を整理する。
     const journalTitle = document.querySelector('.journal-heading h2');
-    if (journalTitle) journalTitle.textContent = '文化祭は、もう始まっている。';
+    if (journalTitle) journalTitle.textContent = '文化祭はもう始まっている。';
     const programBookTitle = document.querySelector('.program-book-copy h2');
-    if (programBookTitle) programBookTitle.textContent = '今年の目高祭を、一冊に。';
+    if (programBookTitle) programBookTitle.textContent = '今年の目高祭を一冊に。';
     const headingStyle = document.createElement('style');
     headingStyle.textContent = `
       .journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
