@@ -21,7 +21,12 @@
 
   function addVisual(card, item) {
     const visual = document.createElement('div');
-    if (item.sprite) {
+    if (item.customImage) {
+      visual.className = 'program-visual custom-program-image';
+      visual.style.backgroundImage = `url("${item.customImage}")`;
+      visual.style.backgroundSize = 'cover';
+      visual.style.backgroundPosition = 'center';
+    } else if (item.sprite) {
       visual.className = `program-visual sprite-${item.sprite}`;
       const cols = 3, rows = item.sprite === 'classes' ? 6 : 9, p = pos(item.spriteIndex, cols, rows);
       visual.style.setProperty('--bx', p.bx);
@@ -30,7 +35,7 @@
       visual.className = 'program-visual no-program-image';
     }
     visual.setAttribute('role', 'img');
-    visual.setAttribute('aria-label', `${item.group} ${item.title} 公式プログラム掲載情報`);
+    visual.setAttribute('aria-label', `${item.group} ${item.title} 企画ビジュアル`);
     card.appendChild(visual);
   }
 
