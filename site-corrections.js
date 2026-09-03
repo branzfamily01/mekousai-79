@@ -19,13 +19,11 @@
       }
     });
 
-    /* ABOUTは廃止。トップの日付直下の本文だけ残す。 */
     document.querySelector('.intro#about, #about.intro')?.remove();
 
     const heroMessages = [...document.querySelectorAll('.hero-festival-message')];
     heroMessages.forEach((el, i) => { if (i > 0) el.remove(); });
 
-    /* 同一本文が別ブロックで残った場合も、hero内の1件以外を削除 */
     const duplicateText = '生徒一人ひとりのアイデアと、仲間と積み重ねてきた時間。';
     [...document.querySelectorAll('main p, main div, main section')].forEach(el => {
       if (el.closest('.hero-festival-message')) return;
@@ -92,11 +90,21 @@
 
     document.querySelectorAll('a[href="programs.html?view=daynight"]').forEach(a => { a.href = 'daynight.html'; });
 
-    /* 固定TOP/BGMがあるため、最下部の黒背景フッターは不要。 */
+    /* 旧フッターは重複要素が多いため置換し、サイト終端だけを簡潔に示す。 */
     document.querySelector('footer')?.remove();
+    if (!document.querySelector('.site-closing')) {
+      const closing = document.createElement('footer');
+      closing.className = 'site-closing';
+      closing.innerHTML = `
+        <div class="site-closing__eyebrow">79th MEKOUSAI / SPECIAL WEBSITE</div>
+        <strong>第79回 目高祭</strong>
+        <p>東京都立目黒高等学校</p>
+        <div class="site-closing__meta"><span>2026.09.05 — 09.06</span><span>文化祭特設サイト</span></div>`;
+      document.body.appendChild(closing);
+    }
 
     const headingStyle = document.createElement('style');
-    headingStyle.textContent = `.journal-heading h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}.mobile-title-break{display:none}.hero-festival-message{max-width:680px;margin:22px 0 26px;padding:18px 20px;border-left:5px solid var(--pink,#ff63c7);background:rgba(255,255,255,.56);font-weight:700;line-height:1.8}.hero-festival-message p{margin:0}.hero-festival-message p+p{margin-top:10px}.floor-guide-note{margin:16px 0 0;font-size:.9rem;font-weight:700;opacity:.78}@media(max-width:640px){.journal-heading h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}.mobile-title-break{display:inline}.hero-festival-message{margin:18px 0 22px;padding:14px 15px;font-size:.92rem;line-height:1.75}}`;
+    headingStyle.textContent = `.journal-heading h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}.mobile-title-break{display:none}.hero-festival-message{max-width:680px;margin:22px 0 26px;padding:18px 20px;border-left:5px solid var(--pink,#ff63c7);background:rgba(255,255,255,.56);font-weight:700;line-height:1.8}.hero-festival-message p{margin:0}.hero-festival-message p+p{margin-top:10px}.floor-guide-note{margin:16px 0 0;font-size:.9rem;font-weight:700;opacity:.78}.site-closing{margin-top:0;padding:72px max(24px,calc((100vw - 1180px)/2)) 110px;background:#f2eadf;color:#161616;border-top:1px solid #161616;text-align:left}.site-closing__eyebrow{font-size:.72rem;font-weight:900;letter-spacing:.16em;margin-bottom:18px}.site-closing>strong{display:block;font-family:var(--font-display,system-ui,sans-serif);font-size:clamp(2rem,5vw,4.4rem);font-weight:900;line-height:1.05}.site-closing>p{margin:14px 0 26px;font-size:1rem;font-weight:800}.site-closing__meta{display:flex;flex-wrap:wrap;gap:10px 24px;padding-top:18px;border-top:1px solid rgba(22,22,22,.35);font-size:.78rem;font-weight:800;letter-spacing:.04em}@media(max-width:640px){.journal-heading h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}.mobile-title-break{display:inline}.hero-festival-message{margin:18px 0 22px;padding:14px 15px;font-size:.92rem;line-height:1.75}.site-closing{padding:54px 22px 120px}.site-closing__meta{flex-direction:column;gap:8px}}`;
     document.head.appendChild(headingStyle);
 
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
