@@ -54,6 +54,15 @@ footer::before{content:none!important;display:none!important}
 .footer-bottom{display:grid!important;grid-template-columns:1fr auto!important;gap:10px 24px!important;padding-top:24px!important;border-top:0!important;color:var(--ink,#171717)!important;font-size:11px!important;font-weight:800!important}
 .footer-bottom small{grid-column:1/-1;opacity:.62;letter-spacing:.05em}
 
+/* Access: chapter title only; school name belongs in the address card, not repeated as a heading. */
+.access-card>div:first-child>h2{display:none!important}
+.access-card>div:first-child{align-self:start}
+.access .section-kicker{margin-bottom:0!important}
+
+/* Official links: use the same rounded display type as other chapter headings. */
+.official-links .section-heading-row h2{font-family:var(--font-display)!important;font-weight:900!important;letter-spacing:-.02em!important;line-height:1.08!important}
+.official-links .section-kicker{font-family:var(--font-body)!important;font-weight:900!important}
+
 @media(max-width:720px){
   html,body{max-width:100%;overflow-x:hidden}
   body>main,main{max-width:100%;overflow-x:hidden}
@@ -87,7 +96,7 @@ footer::before{content:none!important;display:none!important}
 
   .section-kicker{max-width:100%;flex-wrap:wrap;gap:9px 10px;margin-bottom:22px;white-space:normal}
   .official-links .section-heading-row.compact{align-items:start}
-  .official-links .section-heading-row h2{margin:0;font-size:clamp(2rem,9vw,2.6rem);line-height:1.18;word-break:normal;overflow-wrap:anywhere}
+  .official-links .section-heading-row h2{margin:0;font-family:var(--font-display)!important;font-size:clamp(2rem,9vw,2.6rem);font-weight:900!important;line-height:1.08!important;letter-spacing:-.02em!important;word-break:normal;overflow-wrap:anywhere}
   .official-links-intro{margin:0;font-size:14px;line-height:1.75}
 
   .timeline-day>header{grid-template-columns:1fr auto;align-items:start}.timeline-day>header small{grid-column:1/-1}
