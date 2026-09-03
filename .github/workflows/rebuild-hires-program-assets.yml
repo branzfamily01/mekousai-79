@@ -23,12 +23,39 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat asset-staging/classes/part-* > /tmp/classes.b64
-          cat asset-staging/others/part-* > /tmp/others.b64
+
+          cat \
+            asset-staging/classes/part-00 \
+            asset-staging/classes/part-01 \
+            asset-staging/classes/part-02 \
+            asset-staging/classes/part-03 \
+            asset-staging/classes/part-04 \
+            asset-staging/classes/part-05 \
+            asset-staging/classes/part-05b \
+            asset-staging/classes/part-06 \
+            > /tmp/classes.b64
+
+          cat \
+            asset-staging/others/part-00 \
+            asset-staging/others/part-01 \
+            asset-staging/others-fix/part-02a \
+            asset-staging/others-fix/part-02b \
+            asset-staging/others-fix/part-02c \
+            asset-staging/others-fix/part-02d \
+            asset-staging/others-fix/part-03a \
+            asset-staging/others-fix/part-03b \
+            asset-staging/others-fix/part-03c \
+            asset-staging/others-fix/part-03d \
+            asset-staging/others/part-04 \
+            asset-staging/others/part-05 \
+            > /tmp/others.b64
+
           base64 --decode /tmp/classes.b64 > program-classes-sprite.avif
           base64 --decode /tmp/others.b64 > program-others-sprite.avif
+
           test "$(stat -c%s program-classes-sprite.avif)" = "77398"
           test "$(stat -c%s program-others-sprite.avif)" = "70373"
+
           file program-classes-sprite.avif
           file program-others-sprite.avif
 
@@ -45,6 +72,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add program-classes-sprite.avif program-others-sprite.avif programs-images-classes.css programs-images-others.css asset-staging
+          git add -A
           git commit -m "Replace low-resolution program sprites with PDF-source AVIF assets"
           git push origin HEAD:upload-hires-assets
