@@ -1,0 +1,4 @@
+# Deploy to Cloudflare の設定画面で入力するSecret。
+# 実値はこのファイルやGitHubへ書き込まない。
+EDITOR_PASSCODE=CHANGE_ME
+SESSION_SECRET=CHANGE_ME_TO_A_LONG_RANDOM_STRING
