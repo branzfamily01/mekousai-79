@@ -1,10 +1,8 @@
 {
   "name": "mekousai-79",
   "private": true,
+  "type": "module",
   "scripts": {
     "deploy": "node scripts/cloudflare-deploy.mjs"
-  },
-  "devDependencies": {
-    "wrangler": "^4.0.0"
   }
 }
