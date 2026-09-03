@@ -1,6 +1,6 @@
 (() => {
   const items = Array.isArray(window.MEKOUSAI_PROGRAMS) ? window.MEKOUSAI_PROGRAMS : [];
-  const publicItems = items.filter(item => item.groupType !== '昼夜祭');
+  const publicItems = items.filter(item => item.groupType !== '中夜祭');
   const grid = document.getElementById('program-grid');
   const count = document.getElementById('result-count');
   const heading = document.getElementById('result-heading');
@@ -20,8 +20,6 @@
   }
 
   function addVisual(card, item) {
-    // English Quest は programs-patch.js のキャッシュ状況に左右されないよう、
-    // 描画時にもグローバル画像を直接フォールバック参照する。
     const customImage = item.customImage ||
       (item.id === 'c-english-quest' ? window.MEKOUSAI_ENGLISH_QUEST_IMAGE : '');
 
@@ -37,8 +35,9 @@
       img.style.width = '100%';
       img.style.height = '100%';
       img.style.display = 'block';
-      img.style.objectFit = 'cover';
+      img.style.objectFit = 'contain';
       img.style.objectPosition = 'center';
+      img.style.background = '#fff';
       img.addEventListener('error', () => {
         visual.classList.add('no-program-image');
         visual.textContent = 'English Quest';
@@ -94,7 +93,6 @@
       copy.className = 'program-copy';
       const tags = document.createElement('div');
       tags.className = 'program-tags';
-      // group と webCategory が同じ場合（English Clubなど）は1つだけ表示する。
       [...new Set([item.group, item.sourceGenre, item.webCategory].filter(Boolean))].forEach(t => {
         const s = document.createElement('span');
         s.textContent = t;
