@@ -20,6 +20,9 @@
     headingStyle.textContent = `
       .journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
       @media(max-width:640px){.journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,9vw,3rem);line-height:1.08}}
+      .top-dock-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 14px;border:1px solid var(--ink);border-radius:999px;background:var(--sun);color:var(--ink);box-shadow:4px 4px 0 var(--ink);font:900 12px/1 var(--font-body);text-decoration:none;white-space:nowrap;transition:transform .2s,box-shadow .2s}
+      .top-dock-button:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+      .top-dock-button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
     `;
     document.head.appendChild(headingStyle);
 
@@ -34,27 +37,32 @@
       }
     });
 
-    // トップの来場申込案内を最新文言へ更新する。
+    // Application Closed：重複説明を削り、来場可能な対象のみ残す。
     const registration = document.querySelector('.registration-closed');
     if (registration) {
       const h2 = registration.querySelector('h2');
       const p = registration.querySelector('p');
       if (h2) h2.textContent = '一般・中学生の来場申し込み受け付けは終了しました。';
-      if (p) p.innerHTML = '<strong>一般来場枠は定員に達しています。中学生・保護者の方のお申し込みも締め切りました。</strong> 卒業生および在校生保護者の方はご自由にご来場いただけます。';
+      if (p) p.textContent = '卒業生および在校生保護者の方はご自由にご来場いただけます。';
     }
 
-    // 校舎案内図はWeb掲載しない。案内文だけを残す。
+    // 公式プログラム紹介文を指定文言へ更新する。
+    const programBookCopy = document.querySelector('.program-book-copy > p');
+    if (programBookCopy) {
+      programBookCopy.textContent = '第79回目高祭の公式プログラム表紙。ビビッドな市松模様と「一瞬の煌めきを 一生の思い出に」のメッセージは、ポスターと並ぶもう一つのキービジュアルです。';
+    }
+
+    // 校舎案内図はWeb掲載しない。公式プログラム参照の一文のみ残す。
     const map = document.getElementById('map');
     if (map) {
       map.innerHTML = `
         <div class="section-kicker"><span>FLOOR GUIDE</span> 校内案内</div>
         <div class="floor-guide-program-only">
           <p>校舎案内図については、公式プログラムをご覧ください。</p>
-          <a class="button button-primary" href="#official-program">公式プログラムを見る <span>↘</span></a>
         </div>`;
     }
 
-    // お知らせ欄も来場条件・昼夜祭の対象者を最新化する。
+    // お知らせ欄も重複説明を削除する。
     const notices = document.getElementById('notices');
     if (notices) {
       notices.innerHTML = `
@@ -62,7 +70,7 @@
         <div class="notice-layout">
           <div><h2>現在のご案内</h2><span aria-hidden="true" class="notice-symbol">!</span></div>
           <ol class="notice-list">
-            <li><span>01</span><div><strong>一般・中学生の来場申し込み受け付けは終了しました。</strong><p>一般来場枠は定員に達しています。中学生・保護者の方のお申し込みも締め切りました。卒業生および在校生保護者の方はご自由にご来場いただけます。</p></div></li>
+            <li><span>01</span><div><strong>一般・中学生の来場申し込み受け付けは終了しました。</strong><p>卒業生および在校生保護者の方はご自由にご来場いただけます。</p></div></li>
             <li><span>02</span><div><strong>一般公開時間</strong><p>9月5日（土）10:00–15:00 ／ 9月6日（日）9:00–15:00</p></div></li>
             <li><span>03</span><div><strong>9月5日の昼夜祭は在校生限定です。</strong><p>一般来場者・中学生・保護者・卒業生の方はご覧いただけません。詳しい参加団体は専用ページで確認できます。</p></div></li>
           </ol>
@@ -98,5 +106,17 @@
 
     // トップの「昼夜祭」導線も専用ページへ直接移動させる。
     document.querySelectorAll('a[href="programs.html?view=daynight"]').forEach(a => { a.href = 'daynight.html'; });
+
+    // 長いトップページをすぐ戻れるよう、BGM操作の近くに固定ボタンを置く。
+    const dock = document.querySelector('.bgm-dock');
+    if (dock && !dock.querySelector('.top-dock-button')) {
+      const topButton = document.createElement('a');
+      topButton.className = 'top-dock-button';
+      topButton.href = '#top';
+      topButton.innerHTML = '<span aria-hidden="true">↑</span> トップへ戻る';
+      const toggle = dock.querySelector('.bgm-toggle');
+      if (toggle) dock.insertBefore(topButton, toggle);
+      else dock.appendChild(topButton);
+    }
   });
 })();
