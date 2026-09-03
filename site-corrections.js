@@ -18,25 +18,19 @@
       }
     });
 
-    /* 「この一瞬を、みんなでつくる。」見出しは削除し、本文だけをトップの日付直下へ移動 */
+    /* 本文は日付カード内に既に配置済み。旧ABOUTセクションだけ削除して重複を防ぐ。 */
     const intro = document.querySelector('.intro#about, #about.intro');
-    const introCopy = intro?.querySelector('.intro-copy');
-    const dateCard = document.querySelector('.hero .date-card');
-    if (introCopy && dateCard) {
-      const message = document.createElement('div');
-      message.className = 'hero-festival-message';
-      message.innerHTML = introCopy.innerHTML;
-      dateCard.insertAdjacentElement('afterend', message);
-    }
     if (intro) intro.remove();
 
-    /* 重複セクションを丸ごと削除 */
+    /* 万一旧処理由来の2個目が残った場合も、先頭1個だけ残す */
+    const heroMessages = document.querySelectorAll('.hero-festival-message');
+    heroMessages.forEach((el, i) => { if (i > 0) el.remove(); });
+
     document.querySelector('.highlights')?.remove();
     document.querySelector('.official-program')?.remove();
     document.getElementById('notices')?.remove();
     document.getElementById('map')?.remove();
 
-    /* 会場案内は独立メニューにせず、プログラム内にさりげなく案内 */
     document.querySelectorAll('a[href="#map"]').forEach(a => a.remove());
     const programGateway = document.getElementById('programs');
     if (programGateway && !programGateway.querySelector('.floor-guide-note')) {
@@ -82,34 +76,16 @@
     if (inlineDayNight) {
       const entry = document.createElement('section');
       entry.className = 'daynight-entry-card';
-      entry.innerHTML = `
-        <div>
-          <span>STUDENTS ONLY</span>
-          <h3>9/5 中夜祭</h3>
-          <p>在校生限定の校内イベントです。一般来場者・中学生・保護者・卒業生の方はご覧いただけません。参加団体の詳細は専用ページにまとめています。</p>
-        </div>
-        <a href="daynight.html">中夜祭ページを見る <b>→</b></a>`;
+      entry.innerHTML = `<div><span>STUDENTS ONLY</span><h3>9/5 中夜祭</h3><p>在校生限定の校内イベントです。一般来場者・中学生・保護者・卒業生の方はご覧いただけません。参加団体の詳細は専用ページにまとめています。</p></div><a href="daynight.html">中夜祭ページを見る <b>→</b></a>`;
       inlineDayNight.replaceWith(entry);
     }
 
     document.querySelectorAll('a[href="programs.html?view=daynight"]').forEach(a => { a.href = 'daynight.html'; });
 
     const headingStyle = document.createElement('style');
-    headingStyle.textContent = `
-      .journal-heading h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
-      .mobile-title-break{display:none}
-      .hero-festival-message{max-width:680px;margin:22px 0 26px;padding:18px 20px;border-left:5px solid var(--pink,#ff63c7);background:rgba(255,255,255,.56);font-weight:700;line-height:1.8}
-      .hero-festival-message p{margin:0}.hero-festival-message p+p{margin-top:10px}
-      .floor-guide-note{margin:16px 0 0;font-size:.9rem;font-weight:700;opacity:.78}
-      @media(max-width:640px){
-        .journal-heading h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}
-        .mobile-title-break{display:inline}
-        .hero-festival-message{margin:18px 0 22px;padding:14px 15px;font-size:.92rem;line-height:1.75}
-      }
-    `;
+    headingStyle.textContent = `.journal-heading h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}.mobile-title-break{display:none}.hero-festival-message{max-width:680px;margin:22px 0 26px;padding:18px 20px;border-left:5px solid var(--pink,#ff63c7);background:rgba(255,255,255,.56);font-weight:700;line-height:1.8}.hero-festival-message p{margin:0}.hero-festival-message p+p{margin-top:10px}.floor-guide-note{margin:16px 0 0;font-size:.9rem;font-weight:700;opacity:.78}@media(max-width:640px){.journal-heading h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}.mobile-title-break{display:inline}.hero-festival-message{margin:18px 0 22px;padding:14px 15px;font-size:.92rem;line-height:1.75}}`;
     document.head.appendChild(headingStyle);
 
-    /* 念のため、残存する旧表記をDOM上でも全置換する。 */
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
