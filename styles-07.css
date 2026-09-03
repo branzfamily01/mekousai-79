@@ -43,6 +43,13 @@
 .daynight-entry-card p{margin:0;max-width:720px;line-height:1.75}
 .daynight-entry-card>a{display:inline-flex;align-items:center;gap:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--ink);color:#fff;text-decoration:none;font-weight:900;white-space:nowrap}
 
+/* Access heading: same hierarchy as the other sections. */
+.access .access-card>div:first-child{display:block!important}
+.access .section-kicker{font-size:0!important;margin-bottom:22px!important}
+.access .section-kicker>span{font-size:11px!important}
+.access .access-card h2{display:block!important;margin:0 0 30px!important;font-size:0!important;line-height:1!important}
+.access .access-card h2::after{content:'アクセス';display:block;font-family:var(--font-display)!important;font-size:clamp(3.1rem,8vw,5.8rem)!important;font-weight:900!important;line-height:1.03!important;letter-spacing:-.04em!important;color:var(--ink)!important}
+
 /* Site ending footer: keep only identity / date / site purpose, no repeated slogan or TOP link. */
 footer{display:block!important;position:relative!important;margin:72px 0 0!important;padding:52px max(24px,calc((100vw - 1180px)/2)) 40px!important;background:var(--paper-light,#f5eee4)!important;color:var(--ink,#171717)!important;border-top:2px solid var(--ink,#171717)!important}
 footer::before{content:none!important;display:none!important}
@@ -53,15 +60,6 @@ footer::before{content:none!important;display:none!important}
 .footer-main h2,.footer-main .button-primary{display:none!important}
 .footer-bottom{display:grid!important;grid-template-columns:1fr auto!important;gap:10px 24px!important;padding-top:24px!important;border-top:0!important;color:var(--ink,#171717)!important;font-size:11px!important;font-weight:800!important}
 .footer-bottom small{grid-column:1/-1;opacity:.62;letter-spacing:.05em}
-
-/* Access: chapter title only; school name belongs in the address card, not repeated as a heading. */
-.access-card>div:first-child>h2{display:none!important}
-.access-card>div:first-child{align-self:start}
-.access .section-kicker{margin-bottom:0!important}
-
-/* Official links: use the same rounded display type as other chapter headings. */
-.official-links .section-heading-row h2{font-family:var(--font-display)!important;font-weight:900!important;letter-spacing:-.02em!important;line-height:1.08!important}
-.official-links .section-kicker{font-family:var(--font-body)!important;font-weight:900!important}
 
 @media(max-width:720px){
   html,body{max-width:100%;overflow-x:hidden}
@@ -96,8 +94,10 @@ footer::before{content:none!important;display:none!important}
 
   .section-kicker{max-width:100%;flex-wrap:wrap;gap:9px 10px;margin-bottom:22px;white-space:normal}
   .official-links .section-heading-row.compact{align-items:start}
-  .official-links .section-heading-row h2{margin:0;font-family:var(--font-display)!important;font-size:clamp(2rem,9vw,2.6rem);font-weight:900!important;line-height:1.08!important;letter-spacing:-.02em!important;word-break:normal;overflow-wrap:anywhere}
+  .official-links .section-heading-row h2{margin:0;font-family:var(--font-display)!important;font-size:clamp(2.8rem,11vw,4rem)!important;font-weight:900!important;line-height:1.06!important;letter-spacing:-.035em!important;word-break:normal;overflow-wrap:anywhere}
   .official-links-intro{margin:0;font-size:14px;line-height:1.75}
+
+  .access .access-card h2::after{font-size:clamp(3.2rem,14vw,4.4rem)!important}
 
   .timeline-day>header{grid-template-columns:1fr auto;align-items:start}.timeline-day>header small{grid-column:1/-1}
   .timeline-grid{--minute:1.75px;grid-template-columns:62px repeat(4,158px);grid-template-rows:54px calc(360 * var(--minute));min-width:694px}
