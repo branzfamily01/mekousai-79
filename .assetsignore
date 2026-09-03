@@ -1,0 +1,9 @@
+# Cloudflare Workers Static Assets: publish only browser-facing files.
+cloudflare/
+src/
+wrangler.toml
+package.json
+package-lock.json
+README.md
+CLOUDFLARE_DEPLOY.md
+*.zip
