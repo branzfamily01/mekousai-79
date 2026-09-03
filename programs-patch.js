@@ -53,15 +53,16 @@
     items.push({ id: 'c-chorus', group: '合唱部', groupType: '部活動', sourceGenre: '合唱', title: '合唱発表', description: '合唱部による文化祭発表です。', venue: '体育館｜9/5 13:10–13:30｜9/6 11:20–11:40', webCategory: '音楽・ダンス', sprite: null, spriteIndex: 0, note: '' });
   }
 
+  const englishQuestImage = window.MEKOUSAI_ENGLISH_QUEST_IMAGE || 'english-quest.webp?v=20260904-1';
   if (!byId.has('c-english-quest')) {
     items.push({
       id: 'c-english-quest', group: 'English Club', groupType: '部活動', sourceGenre: 'スタンプラリー', title: 'English Quest',
       description: '怪盗アルセーヌ・ルパンに盗まれた学校の宝物を追い、校内のヒントをたどりながらスタンプを集め、秘密の場所を見つけるスタンプラリーです。すべてのスタンプを集めて、隠された場所を探し出そう！',
       venue: '4階自習エリア', webCategory: 'English Club', sprite: null, spriteIndex: 0,
-      customImage: 'english-quest.webp?v=20260904-1', note: ''
+      customImage: englishQuestImage, note: ''
     });
   } else {
-    patch('c-english-quest', { customImage: 'english-quest.webp?v=20260904-1' });
+    patch('c-english-quest', { customImage: englishQuestImage });
   }
 
   if (!byId.has('v-dance26')) {
