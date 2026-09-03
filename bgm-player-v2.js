@@ -18,9 +18,9 @@
 
     const style = document.createElement('style');
     style.textContent = `
-      #bgm-player.mekousai-bgm-v2{position:fixed;right:14px;bottom:14px;z-index:9999;font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#171717}
+      #bgm-player.mekousai-bgm-v2{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(18px,calc(env(safe-area-inset-bottom) + 10px));z-index:9999;display:grid;justify-items:end;gap:10px;font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:#171717}
       #bgm-player.mekousai-bgm-v2 *{box-sizing:border-box}
-      #bgm-player .bgm-v2-panel{width:min(330px,calc(100vw - 28px));margin:0 0 8px auto;background:#fff9e8;border:2px solid #171717;border-radius:18px;box-shadow:7px 7px 0 #171717;padding:14px}
+      #bgm-player .bgm-v2-panel{width:min(330px,calc(100vw - 28px));margin:0;background:#fff9e8;border:2px solid #171717;border-radius:18px;box-shadow:7px 7px 0 #171717;padding:14px}
       #bgm-player .bgm-v2-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
       #bgm-player .bgm-v2-kicker{font-size:10px;font-weight:900;letter-spacing:.14em}
       #bgm-player .bgm-v2-title{display:block;font-size:17px;line-height:1.2;margin-top:3px}
@@ -32,10 +32,18 @@
       #bgm-player .bgm-v2-volume{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:10px;font-weight:900}
       #bgm-player .bgm-v2-volume input{width:100%}
       #bgm-player .bgm-v2-status{display:flex;justify-content:space-between;gap:10px;margin-top:9px;font-size:11px;font-weight:700}
-      #bgm-player .bgm-v2-toggle{display:flex;align-items:center;gap:8px;margin-left:auto;border:2px solid #171717;border-radius:999px;background:#171717;color:#fff;padding:10px 14px;font-weight:800;box-shadow:4px 4px 0 #ffd84f;cursor:pointer}
+      #bgm-player .bgm-v2-top,#bgm-player .bgm-v2-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid #171717;border-radius:999px;font-weight:900;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer}
+      #bgm-player .bgm-v2-top{min-height:42px;padding:9px 14px;background:#ffd84f;color:#171717;box-shadow:4px 4px 0 #171717;font-size:12px}
+      #bgm-player .bgm-v2-toggle{min-height:46px;padding:10px 14px;background:#171717;color:#fff;box-shadow:4px 4px 0 #ffd84f;font-size:13px}
       #bgm-player .bgm-v2-dot{width:8px;height:8px;border-radius:50%;background:#ff4d61}
       #bgm-player[data-playing="false"] .bgm-v2-dot{display:none}
-      @media(max-width:600px){#bgm-player.mekousai-bgm-v2{right:10px;bottom:10px}#bgm-player .bgm-v2-panel{width:min(310px,calc(100vw - 20px))}}
+      #bgm-player .bgm-v2-top:focus-visible,#bgm-player .bgm-v2-toggle:focus-visible,#bgm-player button:focus-visible{outline:3px solid #4f78ff;outline-offset:3px}
+      @media(max-width:600px){
+        #bgm-player.mekousai-bgm-v2{right:max(10px,env(safe-area-inset-right));bottom:max(14px,calc(env(safe-area-inset-bottom) + 8px));gap:9px}
+        #bgm-player .bgm-v2-panel{width:min(310px,calc(100vw - 20px))}
+        #bgm-player .bgm-v2-top{min-height:40px;padding:8px 13px;font-size:11px}
+        #bgm-player .bgm-v2-toggle{min-height:44px;padding:9px 13px;font-size:12px}
+      }
     `;
     document.head.appendChild(style);
 
@@ -62,6 +70,7 @@
         <label class="bgm-v2-volume"><span>VOL</span><input type="range" min="0" max="1" step="0.01"><output></output></label>
         <div class="bgm-v2-status"><span class="bgm-v2-message">停止中</span><span>← / → は1曲ずつ移動</span></div>
       </section>
+      <a class="bgm-v2-top" href="#top" aria-label="ページのトップへ戻る"><span aria-hidden="true">↑</span> TOPへ戻る</a>
       <button class="bgm-v2-toggle" type="button" aria-expanded="false"><span class="bgm-v2-dot" aria-hidden="true"></span><span class="bgm-v2-toggle-label">BGMを聴く</span></button>
     `;
 
