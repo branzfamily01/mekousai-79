@@ -11,6 +11,38 @@
       img.alt = '第79回目高祭 公式プログラム表紙';
     });
 
+    // 長い見出しが不自然に3段以上へ割れないよう、改行を外してバランス調整する。
+    const journalTitle = document.querySelector('.journal-heading h2');
+    if (journalTitle) journalTitle.textContent = '文化祭は、もう始まっている。';
+    const programBookTitle = document.querySelector('.program-book-copy h2');
+    if (programBookTitle) programBookTitle.textContent = '今年の目高祭を、一冊に。';
+    const headingStyle = document.createElement('style');
+    headingStyle.textContent = `
+      .journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
+      @media(max-width:640px){.journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,9vw,3rem);line-height:1.08}}
+    `;
+    document.head.appendChild(headingStyle);
+
+    // 写真で見る目高祭の説明文・準備風景キャプションを簡潔化する。
+    const journalIntro = document.querySelector('.journal-intro p');
+    if (journalIntro) journalIntro.textContent = '準備の放課後から、本番の熱気、そして表彰の瞬間まで。目高生がつくる第79回目高祭を、写真で追いかけます。';
+    document.querySelectorAll('.photo-caption').forEach(caption => {
+      const title = caption.querySelector('h3')?.textContent.trim();
+      if (title === '準備風景') {
+        const p = caption.querySelector('p');
+        if (p) p.textContent = '教室装飾の様子';
+      }
+    });
+
+    // トップの来場申込案内を最新文言へ更新する。
+    const registration = document.querySelector('.registration-closed');
+    if (registration) {
+      const h2 = registration.querySelector('h2');
+      const p = registration.querySelector('p');
+      if (h2) h2.textContent = '一般・中学生の来場申し込み受け付けは終了しました。';
+      if (p) p.innerHTML = '<strong>一般来場枠は定員に達しています。中学生・保護者の方のお申し込みも締め切りました。</strong> 卒業生および在校生保護者の方はご自由にご来場いただけます。';
+    }
+
     // 校舎案内図はWeb掲載しない。案内文だけを残す。
     const map = document.getElementById('map');
     if (map) {
@@ -22,7 +54,7 @@
         </div>`;
     }
 
-    // お知らせから「掲載可否確認中」等の校舎案内図に関する記述を削除する。
+    // お知らせ欄も来場条件・昼夜祭の対象者を最新化する。
     const notices = document.getElementById('notices');
     if (notices) {
       notices.innerHTML = `
@@ -30,9 +62,9 @@
         <div class="notice-layout">
           <div><h2>現在のご案内</h2><span aria-hidden="true" class="notice-symbol">!</span></div>
           <ol class="notice-list">
-            <li><span>01</span><div><strong>来場申込受付は終了しました。</strong><p>一般来場枠も定員に達しています。</p></div></li>
+            <li><span>01</span><div><strong>一般・中学生の来場申し込み受け付けは終了しました。</strong><p>一般来場枠は定員に達しています。中学生・保護者の方のお申し込みも締め切りました。卒業生および在校生保護者の方はご自由にご来場いただけます。</p></div></li>
             <li><span>02</span><div><strong>一般公開時間</strong><p>9月5日（土）10:00–15:00 ／ 9月6日（日）9:00–15:00</p></div></li>
-            <li><span>03</span><div><strong>9月5日の昼夜祭は在校生限定です。</strong><p>一般来場者・保護者の方はご覧いただけません。詳しい参加団体は専用ページで確認できます。</p></div></li>
+            <li><span>03</span><div><strong>9月5日の昼夜祭は在校生限定です。</strong><p>一般来場者・中学生・保護者・卒業生の方はご覧いただけません。詳しい参加団体は専用ページで確認できます。</p></div></li>
           </ol>
         </div>
         <a class="button button-dark notice-button" href="https://www.metro.ed.jp/meguro-h/news/2026/08/79_1.html" rel="noreferrer" target="_blank">学校公式の目高祭案内を見る <span>↗</span></a>`;
@@ -58,7 +90,7 @@
         <div>
           <span>STUDENTS ONLY</span>
           <h3>9/5 昼夜祭</h3>
-          <p>在校生限定の校内イベントです。一般来場者・保護者の方はご覧いただけません。参加団体の写真と紹介は専用ページにまとめています。</p>
+          <p>在校生限定の校内イベントです。一般来場者・中学生・保護者・卒業生の方はご覧いただけません。参加団体の詳細は専用ページにまとめています。</p>
         </div>
         <a href="daynight.html">昼夜祭ページを見る <b>→</b></a>`;
       inlineDayNight.replaceWith(entry);
