@@ -1,0 +1,44 @@
+/* 2026-09-04: homepage simplification requested after mobile review */
+
+/* Remove duplicated homepage sections entirely. */
+#about.intro,
+.highlights,
+.official-program,
+#notices,
+#map{display:none!important}
+
+/* Remove the independent floor-guide item from both desktop and mobile menus. */
+a[href="#map"]{display:none!important}
+
+/* Reuse only the useful intro copy near the hero date without the old heading/cards. */
+.hero .date-card{flex-wrap:wrap!important;height:auto!important;overflow:visible!important}
+.hero .date-card::after{
+  content:"生徒一人ひとりのアイデアと、仲間と積み重ねてきた時間。そのすべてが、2日間の目高祭に集まります。\A見て、食べて、参加して。ここでしか生まれない煌めきを、どうぞお楽しみください。";
+  display:block;
+  flex:0 0 100%;
+  width:100%;
+  margin-top:18px;
+  padding:15px 16px;
+  border-left:5px solid var(--pink,#ff63c7);
+  background:rgba(255,255,255,.58);
+  white-space:pre-line;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.8;
+  letter-spacing:0;
+}
+
+/* Quiet floor-map mention retained in the program gateway instead of a menu/section. */
+#programs::after{
+  content:"校舎案内図は、当日配布の公式プログラムをご覧ください。";
+  display:block;
+  margin-top:16px;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.7;
+  opacity:.72;
+}
+
+@media(max-width:720px){
+  .hero .date-card::after{font-size:13px;line-height:1.75;padding:13px 14px;margin-top:14px}
+}
