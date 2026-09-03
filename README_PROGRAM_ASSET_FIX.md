@@ -1,0 +1,1 @@
+Program asset correction note: 2026-09-03. Program visuals are being rebuilt from the embedded PDF images and verified against each organization before deployment. Choir schedule remains removed per the latest correction.
