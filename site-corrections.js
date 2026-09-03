@@ -11,18 +11,19 @@
       img.alt = '第79回目高祭 公式プログラム表紙';
     });
 
-    // 長い見出しが不自然に3段以上へ割れないよう、文言と改行を整理する。
+    // 長い見出しをPCでは強く、スマホでは画面内に自然に収める。
     const journalTitle = document.querySelector('.journal-heading h2');
-    if (journalTitle) journalTitle.textContent = '文化祭はもう始まっている。';
+    if (journalTitle) journalTitle.innerHTML = '文化祭はもう<span class="mobile-title-break"><br></span>始まっている。';
     const programBookTitle = document.querySelector('.program-book-copy h2');
     if (programBookTitle) programBookTitle.textContent = '今年の目高祭を一冊に。';
     const headingStyle = document.createElement('style');
     headingStyle.textContent = `
       .journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}
-      @media(max-width:640px){.journal-heading h2,.program-book-copy h2{font-size:clamp(2rem,9vw,3rem);line-height:1.08}}
-      .top-dock-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 14px;border:1px solid var(--ink);border-radius:999px;background:var(--sun);color:var(--ink);box-shadow:4px 4px 0 var(--ink);font:900 12px/1 var(--font-body);text-decoration:none;white-space:nowrap;transition:transform .2s,box-shadow .2s}
-      .top-dock-button:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
-      .top-dock-button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+      .mobile-title-break{display:none}
+      @media(max-width:640px){
+        .journal-heading h2,.program-book-copy h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}
+        .mobile-title-break{display:inline}
+      }
     `;
     document.head.appendChild(headingStyle);
 
@@ -78,6 +79,19 @@
         <a class="button button-dark notice-button" href="https://www.metro.ed.jp/meguro-h/news/2026/08/79_1.html" rel="noreferrer" target="_blank">学校公式の目高祭案内を見る <span>↗</span></a>`;
     }
 
+    // タイムテーブルは説明を省き、ラベル＋タイトルの直後に表を置く。
+    const timetable = document.getElementById('timetable');
+    if (timetable) {
+      const heading = timetable.querySelector('.section-heading-row');
+      if (heading) {
+        const simple = document.createElement('div');
+        simple.className = 'timetable-heading-simple';
+        simple.innerHTML = '<div class="section-kicker"><span>TIMETABLE</span></div><h2>タイムテーブル</h2>';
+        heading.replaceWith(simple);
+      }
+      timetable.querySelectorAll('.timetable-note').forEach(el => el.remove());
+    }
+
     // タイムテーブルの会場見出しに階数を追加する。
     const floorByVenue = new Map([
       ['講義室1・2', '講義室1・2（4階）'],
@@ -106,17 +120,5 @@
 
     // トップの「昼夜祭」導線も専用ページへ直接移動させる。
     document.querySelectorAll('a[href="programs.html?view=daynight"]').forEach(a => { a.href = 'daynight.html'; });
-
-    // 長いトップページをすぐ戻れるよう、BGM操作の近くに固定ボタンを置く。
-    const dock = document.querySelector('.bgm-dock');
-    if (dock && !dock.querySelector('.top-dock-button')) {
-      const topButton = document.createElement('a');
-      topButton.className = 'top-dock-button';
-      topButton.href = '#top';
-      topButton.innerHTML = '<span aria-hidden="true">↑</span> トップへ戻る';
-      const toggle = dock.querySelector('.bgm-toggle');
-      if (toggle) dock.insertBefore(topButton, toggle);
-      else dock.appendChild(topButton);
-    }
   });
 })();
