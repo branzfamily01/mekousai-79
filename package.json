@@ -2,27 +2,9 @@
   "name": "mekousai-79",
   "private": true,
   "scripts": {
-    "deploy": "npm run db:migrations:apply && wrangler deploy",
-    "db:migrations:apply": "wrangler d1 migrations apply DB --remote",
-    "cf:check": "wrangler deploy --dry-run"
+    "deploy": "node scripts/cloudflare-deploy.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
-  },
-  "cloudflare": {
-    "bindings": {
-      "EDITOR_PASSCODE": {
-        "description": "写真編集ページ用のパスコード。学校の担当者だけが知る値を設定してください。GitHubには保存されません。"
-      },
-      "SESSION_SECRET": {
-        "description": "編集ログインのセッション署名用。32文字以上の十分長いランダム文字列を設定してください。GitHubには保存されません。"
-      },
-      "MEDIA": {
-        "description": "文化祭写真本体を保存するR2 bucket。"
-      },
-      "DB": {
-        "description": "写真のカテゴリ・説明・公開状態・代表写真を管理するD1 database。"
-      }
-    }
   }
 }
