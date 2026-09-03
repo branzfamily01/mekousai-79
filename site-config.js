@@ -5,12 +5,12 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 });
 
 (() => {
-  const VERSION = '20260903-mobile-ui-1';
+  const VERSION = '20260903-bgm-programs-3';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
     script.src = src;
-    script.defer = true;
+    script.async = false;
     document.head.appendChild(script);
   };
   const loadCss = (href) => {
@@ -21,9 +21,10 @@ window.MEKOUSAI_CONFIG = Object.freeze({
     document.head.appendChild(link);
   };
 
-  // iPhone/Safariで旧CSS・旧JSが残らないよう、今回のUI修正版だけversion queryを付ける。
+  // iPhone/Safariの旧キャッシュを避け、今回の修正版を確実に読む。
   loadCss(`styles-07.css?v=${VERSION}`);
   load(`site-corrections.js?v=${VERSION}`);
   load('site-remove-chorus.js');
+  load(`bgm-continuity.js?v=${VERSION}`);
   load(`bgm-player-v2.js?v=${VERSION}`);
 })();
