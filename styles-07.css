@@ -43,6 +43,16 @@
 .daynight-entry-card p{margin:0;max-width:720px;line-height:1.75}
 .daynight-entry-card>a{display:inline-flex;align-items:center;gap:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--ink);color:#fff;text-decoration:none;font-weight:900;white-space:nowrap}
 
+/* Site ending footer: keep only identity / date / site purpose, no repeated slogan or TOP link. */
+footer{display:block!important;position:relative!important;margin:72px 0 0!important;padding:52px max(24px,calc((100vw - 1180px)/2)) 40px!important;background:var(--paper-light,#f5eee4)!important;color:var(--ink,#171717)!important;border-top:2px solid var(--ink,#171717)!important}
+footer::before{content:'79th MEKOUSAI / SPECIAL WEBSITE';display:block;margin-bottom:18px;font-size:11px;font-weight:900;letter-spacing:.18em}
+.footer-main{display:block!important;padding:0 0 34px!important;border-bottom:1px solid rgba(23,23,23,.35)!important}
+.footer-main>p{margin:0!important;font-family:var(--font-display);font-size:clamp(2rem,8vw,4.2rem)!important;font-weight:900!important;line-height:1.05!important}
+.footer-main>p::after{content:'\A文化祭特設サイト';white-space:pre;display:block;margin-top:14px;font-family:var(--font-body);font-size:13px;font-weight:800;letter-spacing:.08em}
+.footer-main h2,.footer-main .button-primary{display:none!important}
+.footer-bottom{display:grid!important;grid-template-columns:1fr auto!important;gap:10px 24px!important;padding-top:24px!important;border-top:0!important;color:var(--ink,#171717)!important;font-size:11px!important;font-weight:800!important}
+.footer-bottom small{grid-column:1/-1;opacity:.62;letter-spacing:.05em}
+
 @media(max-width:720px){
   html,body{max-width:100%;overflow-x:hidden}
   body>main,main{max-width:100%;overflow-x:hidden}
@@ -92,4 +102,9 @@
 
   .floor-guide-program-only{align-items:flex-start;flex-direction:column;padding:18px}
   .daynight-entry-card{grid-template-columns:1fr;padding:20px;box-shadow:5px 5px 0 var(--ink)}.daynight-entry-card>a{justify-content:center;white-space:normal}
+
+  footer{margin-top:50px!important;padding:38px 24px 34px!important}
+  .footer-main{padding-bottom:26px!important}
+  .footer-bottom{grid-template-columns:1fr!important;gap:8px!important}
+  .footer-bottom small{grid-column:auto}
 }
