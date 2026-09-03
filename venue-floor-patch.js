@@ -25,4 +25,5 @@
   // 通常展示のうち、今回階数が確定している会場
   patchVenue('v-okinawa', '2年1組（3階）・2年2組（3階）｜9/5・6');
   patchVenue('c-homemade', '調理室前（5階）｜9/5・6（販売14:00〜）');
+  patchVenue('c-english-quest', '4階自習スペース');
 })();
