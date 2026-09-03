@@ -14,5 +14,5 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   };
   load('site-corrections.js');
   load('site-remove-chorus.js');
-  load('bgm-playlist.js');
+  load('bgm-player-v2.js');
 })();
