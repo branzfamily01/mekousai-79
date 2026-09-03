@@ -69,6 +69,26 @@
       webCategory: '音楽・ダンス', sprite: null, spriteIndex: 0, note: ''
     });
   }
+
+  // English Club「English Quest」スタンプラリー。
+  // 添付PDFの内容をもとに、画像内の場所表記だけユーザー指定の「4階自習エリア」に修正。
+  if (!byId.has('c-english-quest')) {
+    items.push({
+      id: 'c-english-quest',
+      group: 'English Club',
+      groupType: '部活動',
+      sourceGenre: 'スタンプラリー',
+      title: 'English Quest',
+      description: '怪盗アルセーヌ・ルパンに盗まれた学校の宝物を追い、校内のヒントをたどりながらスタンプを集め、秘密の場所を見つけるスタンプラリーです。すべてのスタンプを集めて、隠された場所を探し出そう！',
+      venue: '4階自習エリア',
+      webCategory: 'アトラクション・催し',
+      sprite: null,
+      spriteIndex: 0,
+      customImage: window.MEKOUSAI_ENGLISH_QUEST_IMAGE || '',
+      note: ''
+    });
+  }
+
   if (!byId.has('v-dance26')) {
     items.push({
       id: 'v-dance26', group: 'ダンス部26期', groupType: '昼夜祭', sourceGenre: 'ダンス', title: 'ダンスパフォーマンス',
