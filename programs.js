@@ -16,7 +16,9 @@
     filtered.forEach(item => {
       const card=document.createElement('article'); card.className='program-card';
       const visual=document.createElement('div'); visual.className=`program-visual sprite-${item.sprite}`; visual.setAttribute('role','img'); visual.setAttribute('aria-label',`${item.group} ${item.title} 公式プログラム掲載ビジュアル`);
-      const p=pos(item.spriteIndex,3,item.sprite==='classes'?6:9); visual.style.setProperty('--bx',p.bx); visual.style.setProperty('--by',p.by); card.appendChild(visual);
+      const cols=item.sprite==='classes'?4:5;
+      const rows=item.sprite==='classes'?5:6;
+      const p=pos(item.spriteIndex,cols,rows); visual.style.setProperty('--bx',p.bx); visual.style.setProperty('--by',p.by); card.appendChild(visual);
       const copy=document.createElement('div'); copy.className='program-copy';
       const tags=document.createElement('div'); tags.className='program-tags'; [item.group,item.sourceGenre,item.webCategory].filter(Boolean).forEach(t=>{const s=document.createElement('span');s.textContent=t;tags.appendChild(s)}); copy.appendChild(tags);
       const h=document.createElement('h3'); h.textContent=item.title; copy.appendChild(h);
