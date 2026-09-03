@@ -4,9 +4,13 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 });
 
 (() => {
-  if (document.querySelector('script[src="site-corrections.js"]')) return;
-  const script = document.createElement('script');
-  script.src = 'site-corrections.js';
-  script.defer = true;
-  document.head.appendChild(script);
+  const load = (src) => {
+    if (document.querySelector(`script[src="${src}"]`)) return;
+    const script = document.createElement('script');
+    script.src = src;
+    script.defer = true;
+    document.head.appendChild(script);
+  };
+  load('site-corrections.js');
+  load('site-remove-chorus.js');
 })();
