@@ -13,64 +13,39 @@
 
 Netlify / GitHub Pages は本番配信には不要。GitHubは正本と自動デプロイ元として残す。
 
-## 残るCloudflare側の初回作業
+## 推奨：Deploy to Cloudflare で一括作成
 
-### 1. R2
+READMEの **Deploy to Cloudflare** ボタンから進む。
 
-R2 bucket を作る。
+Cloudflareが `wrangler.toml` を読み、以下を自動プロビジョニング・bindingする構成にしてある。
 
-- name: `mekousai-79-media`
-- storage class: Standard
+- R2 bucket `mekousai-79-media`
+- D1 database `mekousai-79-gallery`
+- Worker `mekousai-79`
+- Static Assets
 
-### 2. D1
+D1 migrationも `npm run deploy` の中で自動適用される。
 
-D1 database を作る。
-
-- name: `mekousai-79-gallery`
-
-作成後の Database ID を `wrangler.toml` の `REPLACE_WITH_D1_DATABASE_ID` と置き換える。
-
-### 3. D1 schema
-
-リポジトリルートで次を1回実行する。
-
-```bash
-npm install
-npm run db:init
-```
-
-またはCloudflare DashboardのD1 Consoleで `cloudflare/gallery-worker/schema.sql` の内容を実行する。
-
-### 4. Secrets
-
-WorkerのSecretsに以下を登録する。値はGitHubへコミットしない。
+設定途中でSecretの入力を求められたら、以下を入力する。
 
 - `EDITOR_PASSCODE`: 編集画面用パスコード
-- `SESSION_SECRET`: 十分長いランダム文字列
+- `SESSION_SECRET`: 32文字以上を目安にした十分長いランダム文字列
 
-### 5. GitHub連携Deploy
+Secretの実値はGitHubへコミットしない。
 
-Cloudflare Dashboard → Workers & Pages → Create application → Import a repository から
-`branzfamily01/mekousai-79` を選択。
+## Deploy後の確認
 
-- Production branch: `main`
-- Root directory: repository root
-- Build command: empty
-- Deploy command: `npx wrangler deploy`
+本番URLで次を確認する。
 
-### 6. 動作確認
-
-本番URLで以下を確認する。
-
-- `/` が表示される
-- `/programs.html` が表示される
-- `/api/health` が `{ "ok": true, ... }`
-- `/editor.html` でログインできる
-- iPhoneから写真を3枚アップロード
-- `/gallery.html?category=preparation` に3枚表示
-- 代表写真変更
-- 非公開→再公開
-- 1枚削除
+1. `/` が表示される
+2. `/programs.html` が表示される
+3. `/api/health` が `{ "ok": true, ... }`
+4. `/editor.html` でログインできる
+5. iPhoneから「準備風景」に写真を3枚アップロード
+6. `/gallery.html?category=preparation` に3枚表示
+7. 代表写真を変更できる
+8. 公開→非公開→再公開できる
+9. 1枚削除できる
 
 ## 写真追加の日常運用
 
@@ -82,3 +57,7 @@ Cloudflare Dashboard → Workers & Pages → Create application → Import a rep
 4. 公開
 
 GitHub / Cloudflare Dashboard / ChatGPTを毎回触る必要はない。
+
+## もしDeploy to Cloudflareを使わない場合
+
+手動でも可能だが、R2作成、D1作成、binding、migration、Secrets設定、Workers Builds接続を個別に行う必要がある。文化祭直前のため、原則として一括Deployを推奨する。
