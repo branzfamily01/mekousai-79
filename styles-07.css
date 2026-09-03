@@ -3,13 +3,13 @@
 
 /* Timetable: vertical time axis, venue columns */
 .timeline-days{display:grid;gap:34px;margin-top:26px}
-.timeline-days::before{content:'縦軸＝時間　／　横軸＝会場';display:block;margin:0 0 -12px;padding:11px 14px;border-left:5px solid var(--sun);background:var(--paper-light);font-size:12px;font-weight:900;letter-spacing:.03em;line-height:1.6}
+.timeline-days::before{content:none;display:none}
 .timeline-day{border:2px solid var(--ink);background:#fff;box-shadow:8px 8px 0 var(--ink);overflow:hidden}
 .timeline-day>header{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:16px;padding:18px 20px;border-bottom:2px solid var(--ink);background:var(--sun)}
 .timeline-day:nth-child(2)>header{background:var(--sky);color:#fff}
 .timeline-day>header strong{font-family:var(--font-display);font-size:34px;font-weight:900;line-height:1}
 .timeline-day>header span,.timeline-day>header small{font-size:10px;font-weight:900;letter-spacing:.08em}
-.timeline-scroll{overflow-x:auto;overscroll-behavior-inline:contain;background:#fff}
+.timeline-scroll{max-width:100%;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;background:#fff}
 .timeline-grid{--minute:2px;display:grid;grid-template-columns:74px repeat(4,minmax(190px,1fr));grid-template-rows:58px calc(360 * var(--minute));min-width:930px;position:relative}
 .timeline-corner,.timeline-venue-head{position:sticky;top:0;z-index:8;display:grid;place-items:center;padding:8px;border-bottom:2px solid var(--ink);border-right:1px solid rgba(23,23,23,.35);background:#fffaf2;font-family:var(--font-display);font-size:13px;font-weight:900;text-align:center;line-height:1.25}
 .timeline-corner{left:0;z-index:10;background:var(--paper-light);font-size:10px;letter-spacing:.08em}
@@ -27,6 +27,11 @@
 .timeline-event time{font-size:9px;font-weight:900;line-height:1.1;white-space:nowrap}
 .timeline-event strong{font-size:11px;font-weight:900;line-height:1.15}
 
+/* Timetable intro: deliberately minimal */
+.timetable-heading-simple{margin-bottom:24px}
+.timetable-heading-simple .section-kicker{margin-bottom:14px}
+.timetable-heading-simple h2{margin:0;font-family:var(--font-display);font-size:clamp(2.2rem,5vw,4rem);font-weight:900;line-height:1.08;letter-spacing:-.025em}
+
 /* Program-only floor-guide notice */
 .floor-guide-program-only{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:18px;padding:24px;border:2px solid var(--ink);background:var(--paper-light);box-shadow:6px 6px 0 var(--ink)}
 .floor-guide-program-only p{margin:0;font-size:1.08rem;font-weight:900;line-height:1.7}
@@ -39,9 +44,52 @@
 .daynight-entry-card>a{display:inline-flex;align-items:center;gap:10px;padding:13px 16px;border:2px solid var(--ink);background:var(--ink);color:#fff;text-decoration:none;font-weight:900;white-space:nowrap}
 
 @media(max-width:720px){
+  html,body{max-width:100%;overflow-x:hidden}
+  body>main,main{max-width:100%;overflow-x:hidden}
+  .section,.registration-closed,.highlights,footer{max-width:100%}
+  .section>*{min-width:0;max-width:100%}
+
+  /* Mobile is single-column everywhere except the timetable viewport itself. */
+  .journal-heading,
+  .section-heading-row,
+  .section-heading-row.compact,
+  .intro-grid,
+  .map-grid,
+  .access-card,
+  .official-links .section-heading-row.compact{grid-template-columns:minmax(0,1fr)!important;gap:20px!important}
+
+  .journal-heading>*,
+  .journal-intro,
+  .journal-intro p,
+  .section-heading-row>*,
+  .official-links-intro,
+  .official-link-grid,
+  .official-link-card,
+  .program-book-copy,
+  .program-book-stage,
+  .future-chapters,
+  .photo-mosaic{min-width:0;max-width:100%}
+
+  .journal-heading{margin-bottom:42px}
+  .journal-heading h2{width:100%;max-width:100%;font-size:clamp(2.15rem,10.5vw,2.7rem)!important;line-height:1.12!important;letter-spacing:-.025em;white-space:normal!important;word-break:normal!important;overflow-wrap:anywhere!important}
+  .journal-intro>p{margin:0;font-size:16px;line-height:1.8;white-space:normal;overflow-wrap:anywhere}
+
+  .section-kicker{max-width:100%;flex-wrap:wrap;gap:9px 10px;margin-bottom:22px;white-space:normal}
+  .official-links .section-heading-row.compact{align-items:start}
+  .official-links .section-heading-row h2{margin:0;font-size:clamp(2rem,9vw,2.6rem);line-height:1.18;word-break:normal;overflow-wrap:anywhere}
+  .official-links-intro{margin:0;font-size:14px;line-height:1.75}
+
   .timeline-day>header{grid-template-columns:1fr auto;align-items:start}.timeline-day>header small{grid-column:1/-1}
   .timeline-grid{--minute:1.75px;grid-template-columns:62px repeat(4,158px);grid-template-rows:54px calc(360 * var(--minute));min-width:694px}
   .timeline-venue-head{font-size:11px;padding:6px}.timeline-time-axis span{font-size:9px;right:6px}.timeline-event{left:4px;right:4px;padding:4px 5px}.timeline-event time{font-size:8px}.timeline-event strong{font-size:10px}
+  .timeline-days{max-width:100%;overflow:visible;margin-top:18px}
+  .timeline-day{max-width:100%;overflow:hidden;box-shadow:5px 5px 0 var(--ink)}
+  .timeline-scroll{width:100%;max-width:100%;overflow-x:auto}
+
+  .timetable-heading-simple{margin-bottom:18px}
+  .timetable-heading-simple .section-kicker{margin-bottom:10px}
+  .timetable-heading-simple h2{font-size:clamp(2rem,10vw,2.7rem)}
+
   .floor-guide-program-only{align-items:flex-start;flex-direction:column;padding:18px}
   .daynight-entry-card{grid-template-columns:1fr;padding:20px;box-shadow:5px 5px 0 var(--ink)}.daynight-entry-card>a{justify-content:center;white-space:normal}
 }
