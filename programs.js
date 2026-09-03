@@ -42,16 +42,17 @@
     });
   }
   function renderDayNight(){
-    if(!dayNightItems.length) return;
+    if(!dayNightItems.length) return null;
     const host=document.createElement('section'); host.className='daynight-festival'; host.id='daynight-festival';
     host.innerHTML=`<div class="daynight-festival__head"><div><span class="daynight-festival__badge">STUDENTS ONLY</span><h2>9/5 昼夜祭</h2></div><div class="daynight-festival__time">体育館｜15:30–17:30</div></div><p class="daynight-festival__notice">昼夜祭は在校生のみが参加する校内イベントです。一般来場者・保護者の方はご覧いただけません。一般公開の催しとは別枠で掲載しています。</p><p class="daynight-festival__report">昼夜祭の様子は、後日このサイトで写真レポートとして紹介します。</p>`;
     const list=document.createElement('div'); list.className='daynight-groups';
     dayNightItems.forEach(item=>{ const card=document.createElement('article'); card.className='daynight-group'; const name=document.createElement('strong');name.textContent=item.group;const title=document.createElement('span');title.textContent=item.title;card.append(name,title);list.appendChild(card); });
-    host.appendChild(list); grid.insertAdjacentElement('afterend',host);
+    host.appendChild(list); grid.insertAdjacentElement('afterend',host); return host;
   }
   document.querySelectorAll('[data-group]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-group]').forEach(b=>b.classList.remove('is-active'));btn.classList.add('is-active');group=btn.dataset.group;render();}));
   document.querySelectorAll('[data-cat]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('is-active'));btn.classList.add('is-active');cat=btn.dataset.cat;render();}));
   document.querySelectorAll('[data-jump]').forEach(btn=>btn.addEventListener('click',()=>{group=btn.dataset.jump;document.querySelectorAll('[data-group]').forEach(b=>b.classList.toggle('is-active',b.dataset.group===group));render();document.querySelector('.p-controls').scrollIntoView({behavior:'smooth',block:'start'});}));
   if(q) search.value=q; document.querySelectorAll('[data-group]').forEach(b=>b.classList.toggle('is-active',b.dataset.group===group)); document.querySelectorAll('[data-cat]').forEach(b=>b.classList.toggle('is-active',b.dataset.cat===cat)); search.addEventListener('input',()=>{q=search.value;render();});
-  render(); renderDayNight();
+  render(); const dayNightHost=renderDayNight();
+  if(params.get('view')==='daynight' && dayNightHost) requestAnimationFrame(()=>dayNightHost.scrollIntoView({behavior:'smooth',block:'start'}));
 })();
