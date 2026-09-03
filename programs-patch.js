@@ -81,7 +81,7 @@
       title: 'English Quest',
       description: '怪盗アルセーヌ・ルパンに盗まれた学校の宝物を追い、校内のヒントをたどりながらスタンプを集め、秘密の場所を見つけるスタンプラリーです。すべてのスタンプを集めて、隠された場所を探し出そう！',
       venue: '4階自習エリア',
-      webCategory: 'アトラクション・催し',
+      webCategory: 'English Club',
       sprite: null,
       spriteIndex: 0,
       customImage: window.MEKOUSAI_ENGLISH_QUEST_IMAGE || '',
