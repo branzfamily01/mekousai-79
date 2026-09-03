@@ -1,14 +1,14 @@
 (() => {
   const TRACKS = [
     { title: 'Summer Sketchbook', src: 'Summer Sketchbook.mp3' },
-    { title: 'Festival Rush', src: 'Festival Rush(1).mp3' },
-    { title: 'After the Lights', src: 'After the Lights(1).mp3' },
-    { title: 'One Brilliant Moment', src: 'One Brilliant Moment(1).mp3' },
-    { title: 'First Spark', src: 'First Spark(1).mp3' },
-    { title: 'After School Glow', src: 'After School Glow(1).mp3' }
+    { title: 'Festival Rush', src: 'Festival Rush.mp3' },
+    { title: 'After the Lights', src: 'After the Lights.mp3' },
+    { title: 'One Brilliant Moment', src: 'One Brilliant Moment.mp3' },
+    { title: 'First Spark', src: 'First Spark.mp3' },
+    { title: 'After School Glow', src: 'After School Glow.mp3' }
   ];
 
-  const STATE_KEY = 'mekousai-bgm-session-v5';
+  const STATE_KEY = 'mekousai-bgm-session-v6';
   const INTERNAL_NAV_KEY = 'mekousai-bgm-internal-nav';
   const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
@@ -183,8 +183,8 @@
       start(false);
     });
 
-    // 重要: 読み込みエラー時に勝手に次曲へ飛ばさない。
-    // これにより右/左矢印は必ず「1クリック = 1曲移動」になる。
+    // 読み込みエラー時に勝手に次曲へ飛ばさない。
+    // 右/左矢印は必ず「1クリック = 1曲移動」。
     audio.addEventListener('error', () => {
       state.playing = false;
       setMessage(`この曲の音源を読み込めません（${state.index + 1} / ${TRACKS.length}）`);
