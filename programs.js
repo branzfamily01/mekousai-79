@@ -20,19 +20,31 @@
   }
 
   function addVisual(card, item) {
-    if (item.customImage) {
+    // English Quest は programs-patch.js のキャッシュ状況に左右されないよう、
+    // 描画時にもグローバル画像を直接フォールバック参照する。
+    const customImage = item.customImage ||
+      (item.id === 'c-english-quest' ? window.MEKOUSAI_ENGLISH_QUEST_IMAGE : '');
+
+    if (customImage) {
       const visual = document.createElement('div');
       visual.className = 'program-visual custom-program-image';
       const img = document.createElement('img');
-      img.src = item.customImage;
+      img.src = customImage;
       img.alt = `${item.group} ${item.title} 企画ビジュアル`;
-      img.loading = 'lazy';
+      img.loading = item.id === 'c-english-quest' ? 'eager' : 'lazy';
       img.decoding = 'async';
+      if (item.id === 'c-english-quest') img.fetchPriority = 'high';
       img.style.width = '100%';
       img.style.height = '100%';
       img.style.display = 'block';
       img.style.objectFit = 'cover';
       img.style.objectPosition = 'center';
+      img.addEventListener('error', () => {
+        visual.classList.add('no-program-image');
+        visual.textContent = 'English Quest';
+        visual.setAttribute('role', 'img');
+        visual.setAttribute('aria-label', `${item.group} ${item.title} 企画ビジュアル`);
+      }, { once: true });
       visual.appendChild(img);
       card.appendChild(visual);
       return;
@@ -75,13 +87,15 @@
     filtered.forEach(item => {
       const card = document.createElement('article');
       card.className = 'program-card';
+      if (item.id === 'c-english-quest') card.classList.add('english-quest-card');
       addVisual(card, item);
 
       const copy = document.createElement('div');
       copy.className = 'program-copy';
       const tags = document.createElement('div');
       tags.className = 'program-tags';
-      [item.group, item.sourceGenre, item.webCategory].filter(Boolean).forEach(t => {
+      // group と webCategory が同じ場合（English Clubなど）は1つだけ表示する。
+      [...new Set([item.group, item.sourceGenre, item.webCategory].filter(Boolean))].forEach(t => {
         const s = document.createElement('span');
         s.textContent = t;
         tags.appendChild(s);
