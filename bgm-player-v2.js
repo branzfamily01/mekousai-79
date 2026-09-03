@@ -70,7 +70,7 @@
         <label class="bgm-v2-volume"><span>VOL</span><input type="range" min="0" max="1" step="0.01"><output></output></label>
         <div class="bgm-v2-status"><span class="bgm-v2-message">停止中</span><span>← / → は1曲ずつ移動</span></div>
       </section>
-      <a class="bgm-v2-top" href="#top" aria-label="ページのトップへ戻る"><span aria-hidden="true">↑</span> TOPへ戻る</a>
+      <a class="bgm-v2-top" href="#" aria-label="ページのトップへ戻る"><span aria-hidden="true">↑</span> TOPへ戻る</a>
       <button class="bgm-v2-toggle" type="button" aria-expanded="false"><span class="bgm-v2-dot" aria-hidden="true"></span><span class="bgm-v2-toggle-label">BGMを聴く</span></button>
     `;
 
@@ -78,6 +78,7 @@
     const panel = root.querySelector('.bgm-v2-panel');
     const toggle = root.querySelector('.bgm-v2-toggle');
     const toggleLabel = root.querySelector('.bgm-v2-toggle-label');
+    const topButton = root.querySelector('.bgm-v2-top');
     const close = root.querySelector('.bgm-v2-close');
     const prev = root.querySelector('.bgm-v2-prev');
     const next = root.querySelector('.bgm-v2-next');
@@ -201,6 +202,10 @@
       save();
     });
 
+    topButton.addEventListener('click', event => {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
     prev.addEventListener('click', () => step(-1));
     next.addEventListener('click', () => step(1));
     play.addEventListener('click', () => audio.paused ? start(false) : stop());
