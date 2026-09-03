@@ -10,6 +10,7 @@
 
     const journalIntro = document.querySelector('.journal-intro p');
     if (journalIntro) journalIntro.textContent = '準備の放課後から、本番の熱気、そして表彰の瞬間まで。目高生がつくる第79回目高祭を、写真で追いかけます。';
+
     document.querySelectorAll('.photo-caption').forEach(caption => {
       const title = caption.querySelector('h3')?.textContent.trim();
       if (title === '準備風景') {
@@ -18,13 +19,22 @@
       }
     });
 
-    /* 本文は日付カード内に既に配置済み。旧ABOUTセクションだけ削除して重複を防ぐ。 */
-    const intro = document.querySelector('.intro#about, #about.intro');
-    if (intro) intro.remove();
+    /* ABOUTは廃止。トップの日付直下の本文だけ残す。 */
+    document.querySelector('.intro#about, #about.intro')?.remove();
 
-    /* 万一旧処理由来の2個目が残った場合も、先頭1個だけ残す */
-    const heroMessages = document.querySelectorAll('.hero-festival-message');
+    const heroMessages = [...document.querySelectorAll('.hero-festival-message')];
     heroMessages.forEach((el, i) => { if (i > 0) el.remove(); });
+
+    /* 同一本文が別ブロックで残った場合も、hero内の1件以外を削除 */
+    const duplicateText = '生徒一人ひとりのアイデアと、仲間と積み重ねてきた時間。';
+    [...document.querySelectorAll('main p, main div, main section')].forEach(el => {
+      if (el.closest('.hero-festival-message')) return;
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!text.includes(duplicateText)) return;
+      if (el.closest('.hero')) return;
+      const childHasSame = [...el.children].some(child => ((child.textContent || '').replace(/\s+/g, ' ').trim()).includes(duplicateText));
+      if (!childHasSame) el.remove();
+    });
 
     document.querySelector('.highlights')?.remove();
     document.querySelector('.official-program')?.remove();
@@ -81,6 +91,9 @@
     }
 
     document.querySelectorAll('a[href="programs.html?view=daynight"]').forEach(a => { a.href = 'daynight.html'; });
+
+    /* 固定TOP/BGMがあるため、最下部の黒背景フッターは不要。 */
+    document.querySelector('footer')?.remove();
 
     const headingStyle = document.createElement('style');
     headingStyle.textContent = `.journal-heading h2{font-size:clamp(2rem,4.4vw,4.5rem);line-height:1.06;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}.mobile-title-break{display:none}.hero-festival-message{max-width:680px;margin:22px 0 26px;padding:18px 20px;border-left:5px solid var(--pink,#ff63c7);background:rgba(255,255,255,.56);font-weight:700;line-height:1.8}.hero-festival-message p{margin:0}.hero-festival-message p+p{margin-top:10px}.floor-guide-note{margin:16px 0 0;font-size:.9rem;font-weight:700;opacity:.78}@media(max-width:640px){.journal-heading h2{max-width:100%;font-size:clamp(2rem,10vw,2.65rem);line-height:1.12;word-break:normal;overflow-wrap:anywhere;text-wrap:balance}.mobile-title-break{display:inline}.hero-festival-message{margin:18px 0 22px;padding:14px 15px;font-size:.92rem;line-height:1.75}}`;
