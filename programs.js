@@ -20,8 +20,9 @@
   }
 
   function addVisual(card, item) {
-    const customImage = item.customImage ||
-      (item.id === 'c-english-quest' ? window.MEKOUSAI_ENGLISH_QUEST_IMAGE : '');
+    const customImage = item.id === 'c-english-quest'
+      ? (window.MEKOUSAI_ENGLISH_QUEST_IMAGE || item.customImage || '')
+      : (item.customImage || '');
 
     if (customImage) {
       const visual = document.createElement('div');
@@ -30,19 +31,28 @@
       img.src = customImage;
       img.alt = `${item.group} ${item.title} 企画ビジュアル`;
       img.loading = item.id === 'c-english-quest' ? 'eager' : 'lazy';
-      img.decoding = 'async';
-      if (item.id === 'c-english-quest') img.fetchPriority = 'high';
+      img.decoding = 'sync';
+      if (item.id === 'c-english-quest') {
+        img.fetchPriority = 'high';
+        visual.dataset.imageSource = 'english-quest-image';
+        visual.style.backgroundColor = '#fff';
+        visual.style.backgroundImage = `url("${customImage}")`;
+        visual.style.backgroundRepeat = 'no-repeat';
+        visual.style.backgroundPosition = 'center';
+        visual.style.backgroundSize = 'contain';
+      }
       img.style.width = '100%';
-      img.style.height = '100%';
+      img.style.height = item.id === 'c-english-quest' ? 'auto' : '100%';
+      img.style.maxHeight = item.id === 'c-english-quest' ? '560px' : 'none';
       img.style.display = 'block';
       img.style.objectFit = 'contain';
       img.style.objectPosition = 'center';
-      img.style.background = '#fff';
+      img.style.background = 'transparent';
+      img.addEventListener('load', () => visual.classList.add('image-loaded'), { once: true });
       img.addEventListener('error', () => {
-        visual.classList.add('no-program-image');
-        visual.textContent = 'English Quest';
-        visual.setAttribute('role', 'img');
-        visual.setAttribute('aria-label', `${item.group} ${item.title} 企画ビジュアル`);
+        /* background-image uses the same actual JPEG as a second rendering path on Safari */
+        visual.classList.add('image-fallback');
+        img.remove();
       }, { once: true });
       visual.appendChild(img);
       card.appendChild(visual);
@@ -57,6 +67,7 @@
       visual.style.setProperty('--by', p.by);
     } else {
       visual.className = 'program-visual no-program-image';
+      if (item.id === 'c-english-quest') visual.textContent = 'English Quest';
     }
     visual.setAttribute('role', 'img');
     visual.setAttribute('aria-label', `${item.group} ${item.title} 企画ビジュアル`);
