@@ -6,6 +6,17 @@
   const search = document.getElementById('program-search');
   const params=new URLSearchParams(location.search); let group=params.get('group')||'all', cat=params.get('cat')||'all', q=params.get('q')||'';
   const norm = s => String(s || '').toLowerCase().replace(/\s+/g,'');
+
+  // PDF内の画像オブジェクト順は、紙面上の企画順と一致しないページがあります。
+  // 2026-09-03に元PDFを1団体ずつ目視照合し、実際の画像位置へ固定しました。
+  const spriteIndexFix = Object.freeze({
+    '3-1':1,'3-2':0,'3-3':2,'3-4':3,'3-5':4,'3-6':5,
+    '2-1':7,'2-2':6,'2-3':9,'2-4':8,'2-5':10,'2-6':11,
+    '1-1':13,'1-2':12,'1-3':15,'1-4':14,'1-5':16,'1-6':17,
+    'c-tea':10,'c-flower':8,'c-calligraphy':9,
+    'c-photo':15,'c-science':14
+  });
+
   function pos(index, cols, rows){ const col=index%cols,row=Math.floor(index/cols); return {bx: cols===1?'0%':`${(col/(cols-1))*100}%`, by: rows===1?'0%':`${(row/(rows-1))*100}%`}; }
   function render(){
     const nq=norm(q);
@@ -18,7 +29,8 @@
       const visual=document.createElement('div'); visual.className=`program-visual sprite-${item.sprite}`; visual.setAttribute('role','img'); visual.setAttribute('aria-label',`${item.group} ${item.title} 公式プログラム掲載ビジュアル`);
       const cols=item.sprite==='classes'?4:5;
       const rows=item.sprite==='classes'?5:6;
-      const p=pos(item.spriteIndex,cols,rows); visual.style.setProperty('--bx',p.bx); visual.style.setProperty('--by',p.by); card.appendChild(visual);
+      const visualIndex = Object.prototype.hasOwnProperty.call(spriteIndexFix,item.id) ? spriteIndexFix[item.id] : item.spriteIndex;
+      const p=pos(visualIndex,cols,rows); visual.style.setProperty('--bx',p.bx); visual.style.setProperty('--by',p.by); card.appendChild(visual);
       const copy=document.createElement('div'); copy.className='program-copy';
       const tags=document.createElement('div'); tags.className='program-tags'; [item.group,item.sourceGenre,item.webCategory].filter(Boolean).forEach(t=>{const s=document.createElement('span');s.textContent=t;tags.appendChild(s)}); copy.appendChild(tags);
       const h=document.createElement('h3'); h.textContent=item.title; copy.appendChild(h);
