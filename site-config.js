@@ -5,7 +5,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 });
 
 (() => {
-  const VERSION = '20260903-bgm-programs-3';
+  const VERSION = '20260904-home-2';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
@@ -22,9 +22,8 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   };
 
   // iPhone/Safariの旧キャッシュを避け、今回の修正版を確実に読む。
-  loadCss(`styles-07.css?v=${VERSION}`);
   load(`site-corrections.js?v=${VERSION}`);
-  load('site-remove-chorus.js');
+  load(`site-remove-chorus.js?v=${VERSION}`);
   load(`bgm-continuity.js?v=${VERSION}`);
   load(`bgm-player-v2.js?v=${VERSION}`);
 })();

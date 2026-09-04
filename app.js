@@ -3,10 +3,10 @@
     if (document.querySelector(`link[href="${href}"]`)) return;
     const link=document.createElement('link'); link.rel='stylesheet'; link.href=href; document.head.appendChild(link);
   };
-  addCss('styles-04.css');
-  addCss('styles-07.css');
-  addCss('gallery-system.css');
-  addCss('daynight.css');
+  addCss('styles-04.css?v=20260904-home-2');
+  addCss('styles-07.css?v=20260904-home-2');
+  addCss('gallery-system.css?v=20260904-home-2');
+  addCss('daynight.css?v=20260904-home-2');
 })();
 
 // BGM: starts stopped; leaving the page/tab always stops playback.
@@ -79,5 +79,5 @@
   document.querySelectorAll('.photo-entry,.future-chapters article').forEach(node=>{const category=map.get(node.querySelector('h3')?.textContent.trim());if(!category)return;node.classList.add('photo-gallery-link');node.dataset.galleryCategory=category;node.tabIndex=0;const go=()=>location.href=`gallery.html?category=${encodeURIComponent(category)}`;node.addEventListener('click',e=>{if(!e.target.closest('a,button,input,select,textarea'))go()});node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});const cap=node.querySelector('.photo-caption');if(cap&&!cap.querySelector('.gallery-open-label')){const x=document.createElement('span');x.className='gallery-open-label';x.innerHTML='写真を見る <b aria-hidden="true">↗</b>';cap.appendChild(x)}targets.push(node)});
   if(!targets.length)return;
   const hydrate=()=>{const base=String(window.MEKOUSAI_CONFIG?.apiBase||'').replace(/\/$/,'');if(!base||base.includes('REPLACE-WITH-WORKER'))return;fetch(`${base}/api/categories`).then(r=>r.ok?r.json():Promise.reject()).then(data=>{const m=new Map((data.categories||[]).map(x=>[x.category,x]));targets.forEach(t=>{const x=m.get(t.dataset.galleryCategory);if(!x?.count)return;t.classList.add('has-gallery-items');const cover=t.querySelector('.empty-photo');if(cover&&x.coverUrl){cover.classList.add('gallery-cover','has-cover-image');cover.textContent='';const img=document.createElement('img');img.src=x.coverUrl;img.alt='';img.loading='lazy';const badge=document.createElement('small');badge.className='gallery-count';badge.textContent=`${x.count} PHOTOS`;cover.append(img,badge)}})}.catch(()=>{})};
-  if(window.MEKOUSAI_CONFIG)hydrate();else{const s=document.createElement('script');s.src='site-config.js';s.onload=hydrate;document.head.appendChild(s)}
+  if(window.MEKOUSAI_CONFIG)hydrate();else{const s=document.createElement('script');s.src='site-config.js?v=20260904-home-2';s.onload=hydrate;document.head.appendChild(s)}
 })();
