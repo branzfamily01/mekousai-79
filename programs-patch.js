@@ -9,7 +9,7 @@
   const flower = byId.get('c-flower');
   if (flower?.description) flower.description = flower.description.replace('体験コーナーもあります。', '9/5(土)は生け花体験コーナーもあります。');
 
-  patch('v-apoai', { customImage: 'apoai-site.jpg?v=20260904-2' });
+  patch('v-apoai', { customImage: window.MEKOUSAI_APOAI_IMAGE || '' });
 
   patch('3-1', { spriteIndex: 1, venue: '講義室1・2｜9/5 11:30–12:00・14:10–14:40｜9/6 9:20–9:50・12:30–13:00' });
   patch('3-2', { spriteIndex: 0, venue: '視聴覚室｜9/5 10:20–10:50・13:00–13:30｜9/6 11:20–11:50・14:10–14:40' });
