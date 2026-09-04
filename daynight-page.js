@@ -23,13 +23,31 @@
     const card = document.createElement('article');
     card.className = 'program-card daynight-program-card';
     const visual = document.createElement('div');
-    if (item.sprite) {
+
+    if (item.customImage) {
+      visual.className = 'program-visual custom-program-image';
+      const img = document.createElement('img');
+      img.src = item.customImage;
+      img.alt = `${item.group} ${item.title} 企画ビジュアル`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.display = 'block';
+      img.style.objectFit = 'contain';
+      img.style.objectPosition = 'center';
+      img.style.background = '#fff';
+      visual.appendChild(img);
+    } else if (item.sprite) {
       visual.className = `program-visual sprite-${item.sprite}`;
       const cols = 3, rows = item.sprite === 'classes' ? 6 : 9;
       const p = pos(item.spriteIndex, cols, rows);
       visual.style.setProperty('--bx', p.bx);
       visual.style.setProperty('--by', p.by);
-    } else visual.className = 'program-visual no-program-image';
+    } else {
+      visual.className = 'program-visual no-program-image';
+    }
+
     visual.setAttribute('role', 'img');
     visual.setAttribute('aria-label', `${item.group} ${item.title} 公式プログラム掲載ビジュアル`);
     card.appendChild(visual);
