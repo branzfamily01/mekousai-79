@@ -39,13 +39,13 @@
   const map=document.getElementById('map');
   if(map) map.innerHTML=`<div class="section-kicker"><span>FLOOR GUIDE</span> 校舎案内図</div><div class="map-grid"><div><h2>校舎案内図は、<br>現在確認中です。</h2><p class="map-lead">文化祭の栞をもとに掲載準備を進めます。Web公開の可否は管理職確認後に確定し、このページへ反映します。</p><a class="button button-primary" href="#access">学校へのアクセスを見る <span>↘</span></a></div><div aria-label="校舎案内図 掲載可否確認中" class="floor-board safe-map-board"><div class="floor-title"><span>SCHOOL MAP</span><strong>校舎案内図</strong></div><div aria-hidden="true" class="safe-map-icon">⌂</div><p class="safe-map-message">掲載可否を<br><strong>確認中</strong></p><small>栞を確認後、案内図付きのページを準備します。</small><span aria-hidden="true" class="map-tape"></span></div></div>`;
   const notices=document.getElementById('notices');
-  if(notices) notices.innerHTML=`<div class="section-kicker"><span>NOTICE</span> ご来場の皆さまへ</div><div class="notice-layout"><div><h2>現在のご案内</h2><span aria-hidden="true" class="notice-symbol">!</span></div><ol class="notice-list"><li><span>01</span><div><strong>来場申込受付は終了しました。</strong><p>一般来場枠も定員に達しています。</p></div></li><li><span>02</span><div><strong>一般公開時間</strong><p>9月5日（土）10:00–15:00 ／ 9月6日（日）9:00–15:00</p></div></li><li><span>03</span><div><strong>9月5日の昼夜祭は在校生限定です。</strong><p>一般来場者・保護者の方はご覧いただけません。後日、写真レポートを掲載予定です。</p></div></li><li><span>04</span><div><strong>校舎案内図は掲載可否を確認中です。</strong><p>栞の案内図をもとにページを準備し、公開のON/OFFは管理職確認後に確定します。</p></div></li></ol></div><a class="button button-dark notice-button" href="https://www.metro.ed.jp/meguro-h/news/2026/08/79_1.html" rel="noreferrer" target="_blank">学校公式の目高祭案内を見る <span>↗</span></a>`;
+  if(notices) notices.innerHTML=`<div class="section-kicker"><span>NOTICE</span> ご来場の皆さまへ</div><div class="notice-layout"><div><h2>現在のご案内</h2><span aria-hidden="true" class="notice-symbol">!</span></div><ol class="notice-list"><li><span>01</span><div><strong>来場申込受付は終了しました。</strong><p>一般来場枠も定員に達しています。</p></div></li><li><span>02</span><div><strong>一般公開時間</strong><p>9月5日（土）10:00–15:00 ／ 9月6日（日）9:00–15:00</p></div></li><li><span>03</span><div><strong>9月5日の中夜祭は在校生限定です。</strong><p>一般来場者・保護者の方はご覧いただけません。後日、写真レポートを掲載予定です。</p></div></li><li><span>04</span><div><strong>校舎案内図は掲載可否を確認中です。</strong><p>栞の案内図をもとにページを準備し、公開のON/OFFは管理職確認後に確定します。</p></div></li></ol></div><a class="button button-dark notice-button" href="https://www.metro.ed.jp/meguro-h/news/2026/08/79_1.html" rel="noreferrer" target="_blank">学校公式の目高祭案内を見る <span>↗</span></a>`;
 
   const volunteer=document.querySelector('.program-paths a[href="programs.html?group=有志"]');
   if(volunteer){
     volunteer.href='programs.html?view=daynight';
     const strong=volunteer.querySelector('strong'), small=volunteer.querySelector('small');
-    if(strong) strong.textContent='昼夜祭';
+    if(strong) strong.textContent='中夜祭';
     if(small) small.textContent='在校生限定・後日写真レポート';
   }
 })();
@@ -68,7 +68,7 @@
     venue('音楽室',[[40,30,'09:40–10:10','3年6組','play'],[110,30,'10:50–11:20','3年4組','play'],[190,30,'12:10–12:40','3年6組','play'],[270,30,'13:30–14:00','3年4組','play']])
   ].join('');
   const dayNightGroups=['ハンバーグπ','舐メキメ','nicht','7th floor','アポアイ！','MAGURO','ゆめゆめゆいま～る','女バラブ','ダンス部26期','Miss11','MAVERICK','Meguro Music Union','男子バスケットボール部精鋭'];
-  const dayNight=`<section class="daynight-festival homepage-daynight"><div class="daynight-festival__head"><div><span class="daynight-festival__badge">STUDENTS ONLY</span><h3>9/5 昼夜祭</h3></div><div class="daynight-festival__time">体育館｜15:30–17:30</div></div><p class="daynight-festival__notice">昼夜祭は在校生のみが参加する校内イベントです。一般来場者・保護者の方はご覧いただけません。一般公開のタイムテーブルとは分けて掲載しています。</p><p class="daynight-festival__report">当日の様子は後日、写真レポートとしてこのサイトに掲載予定です。</p><div class="daynight-groups">${dayNightGroups.map(name=>`<article class="daynight-group"><strong>${name}</strong></article>`).join('')}</div></section>`;
+  const dayNight=`<section class="daynight-festival homepage-daynight"><div class="daynight-festival__head"><div><span class="daynight-festival__badge">STUDENTS ONLY</span><h3>9/5 中夜祭</h3></div><div class="daynight-festival__time">体育館｜15:30–17:30</div></div><p class="daynight-festival__notice">中夜祭は在校生のみが参加する校内イベントです。一般来場者・保護者の方はご覧いただけません。一般公開のタイムテーブルとは分けて掲載しています。</p><p class="daynight-festival__report">当日の様子は後日、写真レポートとしてこのサイトに掲載予定です。</p><div class="daynight-groups">${dayNightGroups.map(name=>`<article class="daynight-group"><strong>${name}</strong></article>`).join('')}</div></section>`;
   section.innerHTML=`<div class="section-heading-row"><div><div class="section-kicker"><span>TIMETABLE</span> タイムテーブル</div><h2>同じ時刻を、<br>横に見比べる。</h2></div><p>縦軸が時間、横軸が会場です。バーの高さと位置で上演時間を比較できるので、重なっている企画や次に移動できる企画が一目で分かります。</p></div><p class="timetable-note">公式プログラム掲載時刻をWeb用に可視化しています。スマートフォンでは左右にスクロールして全会場を比較できます。</p><div class="timeline-days">${day('01','9月5日（土）','一般公開 10:00–15:00',d1)}${day('02','9月6日（日）','一般公開 9:00–15:00',d2)}</div>${dayNight}`;
 })();
 
