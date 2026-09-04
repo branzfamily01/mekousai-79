@@ -54,8 +54,8 @@
     if (registration) {
       const h2 = registration.querySelector('h2');
       const p = registration.querySelector('p');
-      if (h2) h2.textContent = '一般・中学生の来場申し込み受け付けは終了しました。';
-      if (p) p.textContent = '卒業生および在校生保護者の方はご自由にご来場いただけます。';
+      if (h2) h2.textContent = '一般・中学生の皆さまを対象とした来場申込の受付は終了いたしました。';
+      if (p) p.textContent = '卒業生および在校生保護者の方はご自由にご来場いただけます。ご来場の際は、スリッパと下足袋をご持参ください。';
     }
 
     const timetable = document.getElementById('timetable');
