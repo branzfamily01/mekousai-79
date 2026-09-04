@@ -10,8 +10,5 @@
 .access-info .address{font-family:var(--font-display);font-size:clamp(1.45rem,3vw,2.2rem);font-weight:900;line-height:1.4}
 .access-info dl div{border-top:1px solid rgba(23,23,23,.35)!important}.access-info dt,.access-info dd{color:var(--ink)!important}.access-card .button-dark{border-color:var(--ink)!important;background:var(--ink)!important;color:#fff!important}
 
-/* The fixed TOP/BGM controls already provide the closing navigation. */
-footer{display:none!important}
-
 @media(max-width:900px){.program-paths{grid-template-columns:repeat(2,minmax(0,1fr))}.program-paths a:last-child{grid-column:1/-1}.program-paths a{min-height:125px}.access-card{grid-template-columns:1fr!important;gap:28px!important}}
 @media(max-width:620px){.hero-goals{grid-template-columns:1fr 1fr}.goal-button{min-height:66px;padding:9px 10px;column-gap:8px}.goal-button>span{font-size:23px}.goal-button strong{font-size:14px}.program-paths{grid-template-columns:1fr 1fr}.program-paths a{min-height:110px;padding:14px}.program-paths a strong{font-size:21px}.program-all-button{grid-template-columns:auto 1fr}.program-all-button small{grid-column:2}.access{padding-top:72px}.access-card h2{font-size:clamp(2.35rem,12vw,3.7rem)!important}.access-info{padding:22px 18px;box-shadow:5px 5px 0 var(--ink)}}
