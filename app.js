@@ -35,7 +35,6 @@
 
 // Current official-program cover and visitor-policy wording.
 (() => {
-  document.querySelectorAll('.program-book-frame img').forEach(img=>{img.src='program-cover.avif'});
   const map=document.getElementById('map');
   if(map) map.innerHTML=`<div class="section-kicker"><span>FLOOR GUIDE</span> 校舎案内図</div><div class="map-grid"><div><h2>校舎案内図は、<br>現在確認中です。</h2><p class="map-lead">文化祭の栞をもとに掲載準備を進めます。Web公開の可否は管理職確認後に確定し、このページへ反映します。</p><a class="button button-primary" href="#access">学校へのアクセスを見る <span>↘</span></a></div><div aria-label="校舎案内図 掲載可否確認中" class="floor-board safe-map-board"><div class="floor-title"><span>SCHOOL MAP</span><strong>校舎案内図</strong></div><div aria-hidden="true" class="safe-map-icon">⌂</div><p class="safe-map-message">掲載可否を<br><strong>確認中</strong></p><small>栞を確認後、案内図付きのページを準備します。</small><span aria-hidden="true" class="map-tape"></span></div></div>`;
   const notices=document.getElementById('notices');
