@@ -28,17 +28,6 @@ a[href="#map"]{display:none!important}
   letter-spacing:0;
 }
 
-/* Quiet floor-map mention retained in the program gateway instead of a menu/section. */
-#programs::after{
-  content:"校舎案内図は、当日配布の公式プログラムをご覧ください。";
-  display:block;
-  margin-top:16px;
-  font-size:13px;
-  font-weight:700;
-  line-height:1.7;
-  opacity:.72;
-}
-
 @media(max-width:720px){
   .hero .date-card::after{font-size:13px;line-height:1.75;padding:13px 14px;margin-top:14px}
 }
