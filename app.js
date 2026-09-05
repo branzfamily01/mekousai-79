@@ -4,7 +4,7 @@
     const link=document.createElement('link'); link.rel='stylesheet'; link.href=href; document.head.appendChild(link);
   };
   addCss('styles-04.css');
-  addCss('styles-07.css?v=20260906-words-1');
+  addCss('styles-07.css');
   addCss('gallery-system.css');
   addCss('daynight.css');
 })();
@@ -37,7 +37,7 @@
 (() => {
   document.querySelectorAll('.program-book-frame img').forEach(img=>{img.src='program-cover.avif'});
   const map=document.getElementById('map');
-  if(map) map.innerHTML=`<div class="section-kicker"><span>FLOOR GUIDE</span> 校舎案内図</div><div class="map-grid"><div><h2>校舎案内図は、<br>現在確認中です。</h2><p class="map-lead">目高祭の栞をもとに掲載準備を進めます。Web公開の可否は管理職確認後に確定し、このページへ反映します。</p><a class="button button-primary" href="#access">学校へのアクセスを見る <span>↘</span></a></div><div aria-label="校舎案内図 掲載可否確認中" class="floor-board safe-map-board"><div class="floor-title"><span>SCHOOL MAP</span><strong>校舎案内図</strong></div><div aria-hidden="true" class="safe-map-icon">⌂</div><p class="safe-map-message">掲載可否を<br><strong>確認中</strong></p><small>栞を確認後、案内図付きのページを準備します。</small><span aria-hidden="true" class="map-tape"></span></div></div>`;
+  if(map) map.innerHTML=`<div class="section-kicker"><span>FLOOR GUIDE</span> 校舎案内図</div><div class="map-grid"><div><h2>校舎案内図は、<br>現在確認中です。</h2><p class="map-lead">文化祭の栞をもとに掲載準備を進めます。Web公開の可否は管理職確認後に確定し、このページへ反映します。</p><a class="button button-primary" href="#access">学校へのアクセスを見る <span>↘</span></a></div><div aria-label="校舎案内図 掲載可否確認中" class="floor-board safe-map-board"><div class="floor-title"><span>SCHOOL MAP</span><strong>校舎案内図</strong></div><div aria-hidden="true" class="safe-map-icon">⌂</div><p class="safe-map-message">掲載可否を<br><strong>確認中</strong></p><small>栞を確認後、案内図付きのページを準備します。</small><span aria-hidden="true" class="map-tape"></span></div></div>`;
   const notices=document.getElementById('notices');
   if(notices) notices.innerHTML=`<div class="section-kicker"><span>NOTICE</span> ご来場の皆さまへ</div><div class="notice-layout"><div><h2>現在のご案内</h2><span aria-hidden="true" class="notice-symbol">!</span></div><ol class="notice-list"><li><span>01</span><div><strong>来場申込受付は終了しました。</strong><p>一般来場枠も定員に達しています。</p></div></li><li><span>02</span><div><strong>一般公開時間</strong><p>9月5日（土）10:00–15:00 ／ 9月6日（日）9:00–15:00</p></div></li><li><span>03</span><div><strong>9月5日の昼夜祭は在校生限定です。</strong><p>一般来場者・保護者の方はご覧いただけません。後日、写真レポートを掲載予定です。</p></div></li><li><span>04</span><div><strong>校舎案内図は掲載可否を確認中です。</strong><p>栞の案内図をもとにページを準備し、公開のON/OFFは管理職確認後に確定します。</p></div></li></ol></div><a class="button button-dark notice-button" href="https://www.metro.ed.jp/meguro-h/news/2026/08/79_1.html" rel="noreferrer" target="_blank">学校公式の目高祭案内を見る <span>↗</span></a>`;
 
@@ -74,10 +74,10 @@
 
 // Photo-journal cards open category galleries; API hydration is optional until Cloudflare is connected.
 (() => {
-  const map=new Map([['準備風景','preparation'],['制作の手元','creation'],['放課後','after-school'],['リハーサル','rehearsal'],['開催直前','final-prep'],['目高祭当日','festival-day'],['表彰・振り返り','awards']]);
+  const map=new Map([['準備風景','preparation'],['制作の手元','creation'],['放課後','after-school'],['リハーサル','rehearsal'],['開催直前','final-prep'],['文化祭当日','festival-day'],['表彰・振り返り','awards']]);
   const targets=[];
   document.querySelectorAll('.photo-entry,.future-chapters article').forEach(node=>{const category=map.get(node.querySelector('h3')?.textContent.trim());if(!category)return;node.classList.add('photo-gallery-link');node.dataset.galleryCategory=category;node.tabIndex=0;const go=()=>location.href=`gallery.html?category=${encodeURIComponent(category)}`;node.addEventListener('click',e=>{if(!e.target.closest('a,button,input,select,textarea'))go()});node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});const cap=node.querySelector('.photo-caption');if(cap&&!cap.querySelector('.gallery-open-label')){const x=document.createElement('span');x.className='gallery-open-label';x.innerHTML='写真を見る <b aria-hidden="true">↗</b>';cap.appendChild(x)}targets.push(node)});
   if(!targets.length)return;
-  const hydrate=()=>{const base=String(window.MEKOUSAI_CONFIG?.apiBase||'').replace(/\/$/,'');if(!base||base.includes('REPLACE-WITH-WORKER'))return;fetch(`${base}/api/categories`).then(r=>r.ok?r.json():Promise.reject()).then(data=>{const m=new Map((data.categories||[]).map(x=>[x.category,x]));targets.forEach(t=>{const x=m.get(t.dataset.galleryCategory);if(!x?.count)return;t.classList.add('has-gallery-items');const cover=t.querySelector('.empty-photo');if(cover&&x.coverUrl){cover.classList.add('gallery-cover','has-cover-image');cover.textContent='';const img=document.createElement('img');img.src=x.coverUrl;img.alt='';img.loading='lazy';const badge=document.createElement('small');badge.className='gallery-count';badge.textContent=`${x.count} PHOTOS`;cover.append(img,badge)}})}.catch(()=>{})};
+  const hydrate=()=>{const base=String(window.MEKOUSAI_CONFIG?.apiBase||'').replace(/\/$/,'');if(!base||base.includes('REPLACE-WITH-WORKER'))return;fetch(`${base}/api/categories`).then(r=>r.ok?r.json():Promise.reject()).then(data=>{const m=new Map((data.categories||[]).map(x=>[x.category,x]));targets.forEach(t=>{const x=m.get(t.dataset.galleryCategory);if(!x?.count)return;t.classList.add('has-gallery-items');const cover=t.querySelector('.empty-photo');if(cover&&x.coverUrl){cover.classList.add('gallery-cover','has-cover-image');cover.textContent='';const img=document.createElement('img');img.src=x.coverUrl;img.alt='';img.loading='lazy';const badge=document.createElement('small');badge.className='gallery-count';badge.textContent=`${x.count} PHOTOS`;cover.append(img,badge)}})}).catch(()=>{})};
   if(window.MEKOUSAI_CONFIG)hydrate();else{const s=document.createElement('script');s.src='site-config.js';s.onload=hydrate;document.head.appendChild(s)}
 })();
