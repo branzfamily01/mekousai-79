@@ -10,15 +10,10 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    if (request.method === 'GET' && path === '/api/categories') {
-      return collapsedCategories(request, env, ctx);
-    }
-
+    // 準備期間の5分類は元のR2カテゴリをそのまま見せる。
+    // 文化祭当日のみ、未分類保持と中夜祭互換処理を行う。
     if (request.method === 'GET' && (path === '/api/photos' || path === '/api/admin/photos')) {
       const category = url.searchParams.get('category');
-      if (category === 'preparation' || PREP_SET.has(category)) {
-        return combinedPreparation(request, env, ctx, path === '/api/admin/photos');
-      }
       if (category === 'festival-day') {
         return festivalPhotos(request, env, ctx, path === '/api/admin/photos');
       }
@@ -35,47 +30,6 @@ export default {
     return galleryApi.fetch(request, env, ctx);
   }
 };
-
-async function collapsedCategories(request, env, ctx) {
-  const response = await galleryApi.fetch(request, env, ctx);
-  if (!response.ok) return response;
-  const payload = await response.json();
-  const source = Array.isArray(payload.categories) ? payload.categories : [];
-  const prep = source.filter(item => PREP_SET.has(item.category));
-  const count = prep.reduce((sum, item) => sum + Number(item.count || 0), 0);
-  const categories = [];
-  if (count > 0) {
-    categories.push({
-      category: 'preparation',
-      count,
-      coverUrl: prep.find(item => item.coverUrl)?.coverUrl || null
-    });
-  }
-  for (const item of source) {
-    if (PREP_SET.has(item.category)) continue;
-    categories.push(item);
-  }
-  return json({ categories }, 200, 'public, max-age=30');
-}
-
-async function combinedPreparation(request, env, ctx, admin) {
-  const url = new URL(request.url);
-  const results = await Promise.all(PREP_CATEGORIES.map(async category => {
-    const next = new URL(url);
-    next.searchParams.set('category', category);
-    next.searchParams.delete('group');
-    const response = await galleryApi.fetch(new Request(next, request), env, ctx);
-    if (!response.ok) return { error: response };
-    const payload = await response.json();
-    return { photos: Array.isArray(payload.photos) ? payload.photos : [] };
-  }));
-  const failed = results.find(item => item.error);
-  if (failed) return failed.error;
-
-  const photos = results.flatMap(item => item.photos).map(photo => ({ ...photo, category: 'preparation' }));
-  photos.sort(sortPhotos);
-  return json({ category: 'preparation', photos }, 200, admin ? 'no-store' : 'public, max-age=30');
-}
 
 async function festivalPhotos(request, env, ctx, admin) {
   const url = new URL(request.url);
@@ -109,9 +63,9 @@ async function normalizedUpload(request, env, ctx) {
   let changed = false;
   let desiredGroup = null;
 
-  if (PREP_SET.has(category) && category !== 'preparation') {
-    form.set('category', 'preparation');
-    changed = true;
+  // 準備期間カテゴリは preparation に潰さず、そのまま保存する。
+  if (PREP_SET.has(category)) {
+    // no-op: gallery-r2.js が元のカテゴリとして保存する
   }
 
   if (category === 'festival-day') {
@@ -195,15 +149,6 @@ function withoutContentType(source) {
   const headers = new Headers(source);
   headers.delete('Content-Type');
   return headers;
-}
-
-function sortPhotos(a, b) {
-  if (Boolean(a.isCover) !== Boolean(b.isCover)) return a.isCover ? -1 : 1;
-  const dateCmp = String(b.takenOn || '').localeCompare(String(a.takenOn || ''));
-  if (dateCmp) return dateCmp;
-  const orderCmp = Number(a.sortOrder || 0) - Number(b.sortOrder || 0);
-  if (orderCmp) return orderCmp;
-  return String(b.createdAt || '').localeCompare(String(a.createdAt || ''));
 }
 
 function json(body, status = 200, cacheControl = 'no-store') {

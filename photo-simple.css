@@ -1,14 +1,4 @@
-/* 2026-09-05: preparation is one flat gallery; only festival-day has folders. */
-.photo-mosaic {
-  grid-template-columns:minmax(0,1fr) !important;
-}
-.photo-mosaic .photo-entry:nth-child(n+2):nth-child(-n+5) {
-  display:none !important;
-}
-.photo-mosaic .photo-entry:first-child {
-  grid-column:1 / -1 !important;
-}
-
+/* 2026-09-05: preparation subcategories restored; festival-day has 7 tabs including all. */
 .festival-folder-nav {
   grid-template-columns:repeat(7,minmax(0,1fr));
 }

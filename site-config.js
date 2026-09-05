@@ -6,7 +6,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 
 (() => {
   const VERSION = '20260903-bgm-programs-3';
-  const PHOTO_VERSION = '20260905-ops6';
+  const PHOTO_VERSION = '20260905-ops8';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
@@ -17,12 +17,10 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   const loadCss = (href) => {
     if (document.querySelector(`link[href="${href}"]`)) return;
     const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
+    link.rel='stylesheet';
+    link.href=href;
     document.head.appendChild(link);
   };
-
-  // iPhone/Safariの旧キャッシュを避け、修正版を確実に読む。
   loadCss(`styles-07.css?v=${VERSION}`);
   loadCss(`gallery-ops.css?v=${PHOTO_VERSION}`);
   loadCss(`photo-simple.css?v=${PHOTO_VERSION}`);
