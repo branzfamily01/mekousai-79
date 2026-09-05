@@ -1,0 +1,93 @@
+/* 2026-09-05: one visible checkbox per existing photo + bulk edit panel. */
+.editor-select-badge { display:none !important; }
+.editor-photo-visual { position:relative; }
+.editor-select-checkbox {
+  width:28px !important;
+  height:28px !important;
+  top:8px !important;
+  left:8px !important;
+}
+.editor-select-hint {
+  position:absolute;
+  left:42px;
+  top:8px;
+  z-index:3;
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:3px 7px;
+  border:1px solid rgba(0,0,0,.45);
+  background:rgba(255,255,255,.93);
+  font-size:.68rem;
+  font-weight:900;
+  pointer-events:none;
+}
+.editor-publish-field {
+  display:grid;
+  gap:4px;
+  font-size:.78rem;
+  font-weight:800;
+}
+.editor-publish-field > input[type="checkbox"] { display:none !important; }
+.editor-individual-publish-select {
+  min-height:40px;
+  border:1px solid #333;
+  background:#fff;
+  padding:7px 9px;
+  font:inherit;
+  font-size:16px;
+}
+
+.editor-bulk-edit-panel {
+  margin:12px 0 18px;
+  padding:16px;
+  border:2px solid var(--gallery-ink);
+  background:#fffdf8;
+  box-shadow:4px 4px 0 rgba(24,23,22,.12);
+}
+.editor-bulk-edit-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.editor-bulk-edit-head h3 { margin:0 0 5px; font-size:1.05rem; }
+.editor-bulk-edit-head p { margin:0; font-size:.82rem; line-height:1.55; opacity:.78; }
+.editor-bulk-edit-badge {
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:56px;
+  min-height:34px;
+  padding:4px 9px;
+  border:2px solid var(--gallery-ink);
+  background:var(--gallery-yellow);
+  font-weight:900;
+}
+.editor-bulk-edit-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.editor-bulk-edit-grid .editor-field.full { grid-column:1 / -1; }
+.editor-bulk-edit-grid .editor-field small { font-size:.72rem; font-weight:600; opacity:.65; }
+.editor-bulk-edit-grid .editor-field.is-disabled { opacity:.48; }
+.editor-bulk-edit-actions {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+.editor-bulk-edit-actions small { font-size:.75rem; opacity:.68; }
+
+@media (max-width:760px) {
+  .editor-bulk-edit-grid { grid-template-columns:1fr; }
+  .editor-bulk-edit-grid .editor-field.full { grid-column:auto; }
+  .editor-bulk-edit-panel { padding:13px; }
+  .editor-bulk-edit-head { align-items:center; }
+  .editor-bulk-edit-actions .editor-button { width:100%; }
+  .editor-select-hint { font-size:.64rem; }
+}
