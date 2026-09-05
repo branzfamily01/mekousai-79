@@ -1,0 +1,23 @@
+/* 2026-09-05: preparation is one flat gallery; only festival-day has folders. */
+.photo-mosaic {
+  grid-template-columns:minmax(0,1fr) !important;
+}
+.photo-mosaic .photo-entry:nth-child(n+2):nth-child(-n+5) {
+  display:none !important;
+}
+.photo-mosaic .photo-entry:first-child {
+  grid-column:1 / -1 !important;
+}
+
+.festival-folder-nav {
+  grid-template-columns:repeat(6,minmax(0,1fr));
+}
+
+@media (max-width:760px) {
+  .festival-folder-nav {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .festival-folder-nav a:last-child {
+    grid-column:auto;
+  }
+}
