@@ -6,7 +6,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 
 (() => {
   const VERSION = '20260903-bgm-programs-3';
-  const PHOTO_VERSION = '20260905-ops8';
+  const PHOTO_VERSION = '20260905-ops10';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
@@ -25,6 +25,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   loadCss(`gallery-ops.css?v=${PHOTO_VERSION}`);
   loadCss(`photo-simple.css?v=${PHOTO_VERSION}`);
   load(`site-corrections.js?v=${VERSION}`);
+  load(`photo-phase-direct.js?v=${PHOTO_VERSION}`);
   load('site-remove-chorus.js');
   load(`bgm-continuity.js?v=${VERSION}`);
   load(`bgm-player-v2.js?v=${VERSION}`);
