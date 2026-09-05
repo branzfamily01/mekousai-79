@@ -1,5 +1,7 @@
 const CATEGORIES = ['preparation','creation','after-school','rehearsal','final-prep','festival-day','awards'];
 const CATEGORY_SET = new Set(CATEGORIES);
+const FESTIVAL_GROUPS = ['grade1','grade2','grade3','club','other'];
+const FESTIVAL_GROUP_SET = new Set(FESTIVAL_GROUPS);
 const MAX_FILE_BYTES = 12 * 1024 * 1024;
 const ALLOWED_MIME = new Map([['image/jpeg','jpg'],['image/png','png'],['image/webp','webp'],['image/avif','avif']]);
 const SESSION_SECONDS = 60 * 60 * 12;
@@ -71,6 +73,16 @@ function cleanDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) throw new HttpError(400, '撮影日の形式が不正です。');
   return s;
 }
+function cleanFestivalGroup(value, category) {
+  if (category !== 'festival-day') return null;
+  const group = String(value || 'other');
+  if (!FESTIVAL_GROUP_SET.has(group)) throw new HttpError(400, '当日写真の分類が不正です。');
+  return group;
+}
+function festivalGroupForMeta(meta) {
+  if (meta?.category !== 'festival-day') return null;
+  return FESTIVAL_GROUP_SET.has(meta.festivalGroup) ? meta.festivalGroup : 'other';
+}
 function clampInt(value, min, max) {
   const n = Number.parseInt(String(value || ''), 10);
   return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : null;
@@ -85,6 +97,7 @@ function mapPhoto(request, meta) {
   return {
     id: meta.id,
     category: meta.category,
+    festivalGroup: festivalGroupForMeta(meta),
     caption: meta.caption || '',
     takenOn: meta.takenOn || null,
     published: Boolean(meta.published),
@@ -136,6 +149,11 @@ async function findMeta(env, id) {
   }
   return null;
 }
+function filterFestivalGroup(items, category, url) {
+  if (category !== 'festival-day' || !url.searchParams.has('group')) return items;
+  const group = cleanFestivalGroup(url.searchParams.get('group'), category);
+  return items.filter(item => festivalGroupForMeta(item) === group);
+}
 
 async function getCategories(request, env) {
   const categories = [];
@@ -149,12 +167,14 @@ async function getCategories(request, env) {
 }
 async function getPublicPhotos(request, env, url) {
   const category = requireCategory(url.searchParams.get('category'));
-  const photos = sortMetas(await listCategoryMeta(env, category)).filter(item => item.published).map(meta => mapPhoto(request, meta));
+  const all = filterFestivalGroup(sortMetas(await listCategoryMeta(env, category)), category, url);
+  const photos = all.filter(item => item.published).map(meta => mapPhoto(request, meta));
   return json({ category, photos }, 200, { cacheControl: 'public, max-age=30' });
 }
 async function getAdminPhotos(request, env, url) {
   const category = requireCategory(url.searchParams.get('category'));
-  const photos = sortMetas(await listCategoryMeta(env, category)).map(meta => mapPhoto(request, meta));
+  const all = filterFestivalGroup(sortMetas(await listCategoryMeta(env, category)), category, url);
+  const photos = all.map(meta => mapPhoto(request, meta));
   return json({ category, photos });
 }
 async function getMedia(request, env, encodedKey) {
@@ -181,6 +201,7 @@ async function uploadPhoto(request, env) {
   const ext = ALLOWED_MIME.get(file.type);
   if (!ext) throw new HttpError(415, 'JPEG / PNG / WebP / AVIF の写真のみ対応しています。');
   const category = requireCategory(form.get('category'));
+  const festivalGroup = cleanFestivalGroup(form.get('festival_group'), category);
   const caption = cleanCaption(form.get('caption'));
   const takenOn = cleanDate(form.get('taken_on'));
   const published = String(form.get('published')) === '1';
@@ -192,7 +213,7 @@ async function uploadPhoto(request, env) {
   const existing = await listCategoryMeta(env, category);
   const sortOrder = existing.reduce((max, x) => Math.max(max, Number(x.sortOrder || 0)), -1) + 1;
   const isCover = published && !existing.some(x => x.published && x.isCover);
-  const meta = { id, objectKey, category, caption, takenOn, mimeType: file.type, width, height, bytes: file.size, published, isCover, sortOrder, createdAt: now, updatedAt: now };
+  const meta = { id, objectKey, category, festivalGroup, caption, takenOn, mimeType: file.type, width, height, bytes: file.size, published, isCover, sortOrder, createdAt: now, updatedAt: now };
   await env.MEDIA.put(objectKey, file.stream(), { httpMetadata: { contentType: file.type, cacheControl: 'public, max-age=3600' }, customMetadata: { photoId: id, category } });
   try { await writeJsonObject(env.MEDIA, metaKey(category, id), meta); }
   catch (error) { await env.MEDIA.delete(objectKey); throw error; }
@@ -208,6 +229,7 @@ async function patchPhoto(request, env, id) {
   meta.caption = Object.hasOwn(body, 'caption') ? cleanCaption(body.caption) : meta.caption;
   meta.takenOn = Object.hasOwn(body, 'takenOn') ? cleanDate(body.takenOn) : meta.takenOn;
   meta.published = Object.hasOwn(body, 'published') ? Boolean(body.published) : Boolean(meta.published);
+  if (meta.category === 'festival-day' && Object.hasOwn(body, 'festivalGroup')) meta.festivalGroup = cleanFestivalGroup(body.festivalGroup, meta.category);
   if (!meta.published) meta.isCover = false;
   meta.updatedAt = new Date().toISOString();
   await writeJsonObject(env.MEDIA, key, meta);
