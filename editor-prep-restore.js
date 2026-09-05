@@ -12,12 +12,13 @@
 
   function ensure(select) {
     const existing = new Set([...select.options].map(o => o.value));
-    const festivalIndex = [...select.options].findIndex(o => o.value === 'festival-day');
+    const festival = [...select.options].find(o => o.value === 'festival-day') || null;
     prep.forEach(([value,label]) => {
       if (existing.has(value)) return;
       const option = new Option(label, value);
-      if (festivalIndex >= 0) select.add(option, festivalIndex);
+      if (festival) select.insertBefore(option, festival);
       else select.add(option);
+      existing.add(value);
     });
   }
   ensure(upload);
