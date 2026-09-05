@@ -6,7 +6,7 @@
 
   whenReady(() => {
     const journalTitle = document.querySelector('.journal-heading h2');
-    if (journalTitle) journalTitle.innerHTML = '文化祭はもう<span class="mobile-title-break"><br></span>始まっている。';
+    if (journalTitle) journalTitle.innerHTML = '目高祭はもう<span class="mobile-title-break"><br></span>始まっている。';
 
     const journalIntro = document.querySelector('.journal-intro p');
     if (journalIntro) journalIntro.textContent = '準備の放課後から、本番の熱気、そして表彰の瞬間まで。目高生がつくる第79回目高祭を、写真で追いかけます。';
@@ -99,7 +99,7 @@
         <div class="site-closing__eyebrow">79th MEKOUSAI / SPECIAL WEBSITE</div>
         <strong>第79回 目高祭</strong>
         <p>東京都立目黒高等学校</p>
-        <div class="site-closing__meta"><span>2026.09.05 — 09.06</span><span>文化祭特設サイト</span></div>`;
+        <div class="site-closing__meta"><span>2026.09.05 — 09.06</span><span>目高祭特設サイト</span></div>`;
       document.body.appendChild(closing);
     }
 
