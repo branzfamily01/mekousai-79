@@ -1,11 +1,11 @@
 (() => {
   const categories = {
     preparation: ['準備風景', 'PREPARATION', '準備期間の写真を、細かく分けずにまとめて掲載しています。'],
-    'festival-day': ['文化祭当日', 'FESTIVAL DAYS', '当日の写真をまとめて見ることも、学年・部活動ごとに見ることもできます。'],
+    'festival-day': ['文化祭当日', 'FESTIVAL DAYS', '当日の写真をまとめて見ることも、学年・部活動・中夜祭ごとに見ることもできます。'],
     awards: ['表彰・振り返り', 'AFTER THE FESTIVAL', '努力が実を結ぶ瞬間と、文化祭を終えたあとの言葉。']
   };
   const aliases = new Set(['creation', 'after-school', 'rehearsal', 'final-prep']);
-  const groups = { grade1:'1学年', grade2:'2学年', grade3:'3学年', club:'部活動', other:'その他' };
+  const groups = { grade1:'1学年', grade2:'2学年', grade3:'3学年', club:'部活動', other:'その他', chuyasai:'中夜祭' };
   const params = new URLSearchParams(location.search);
   const requested = params.get('category');
   const category = aliases.has(requested) ? 'preparation' : (categories[requested] ? requested : 'preparation');

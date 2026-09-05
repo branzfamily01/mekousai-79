@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f2eadf">
 <title>写真編集｜第79回 目高祭</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css?v=20260905-ops4"><link rel="stylesheet" href="editor-bulk-v2.css?v=20260905-ops5">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css?v=20260905-ops6"><link rel="stylesheet" href="editor-bulk-v2.css?v=20260905-ops5">
 </head>
 <body class="editor-page">
 <main class="editor-shell">
   <div class="editor-topbar"><a class="editor-back" href="index.html#top">← 公開サイトへ</a><span class="gallery-brand">MEKOUSAI PHOTO EDITOR</span></div>
-  <header class="editor-title"><span class="gallery-kicker">EDITOR</span><h1>写真を<br>まとめて管理。</h1><p>準備写真はひとまとめ。当日の写真だけ学年・部活動・その他に分けて管理できます。投稿後の写真も、選択したものだけまとめて編集できます。</p><div class="editor-status" id="editor-status">API確認中</div></header>
+  <header class="editor-title"><span class="gallery-kicker">EDITOR</span><h1>写真を<br>まとめて管理。</h1><p>準備写真はひとまとめ。当日の写真は学年・部活動・その他・中夜祭に分けて管理できます。投稿後の写真も、選択したものだけまとめて編集できます。</p><div class="editor-status" id="editor-status">API確認中</div></header>
 
   <section class="editor-panel editor-login" id="login-panel"><h2>編集者ログイン</h2><form id="login-form"><label class="editor-field"><span>編集用パスコード</span><input id="passcode" type="password" autocomplete="current-password" inputmode="numeric" required></label><div class="editor-actions"><button class="editor-button" type="submit">ログイン</button></div></form><p class="editor-note">パスコードはこのページやGitHubには保存しません。Cloudflare Worker側のSecretだけで照合します。</p></section>
 
@@ -59,6 +59,6 @@
   </div>
 </main>
 <div class="editor-toast" id="editor-toast" hidden></div>
-<script src="site-config.js"></script><script src="editor.js?v=20260905-ops4"></script>
+<script src="site-config.js"></script><script src="editor.js?v=20260905-ops4"></script><script src="editor-chuyasai.js?v=20260905-ops6"></script>
 </body>
 </html>

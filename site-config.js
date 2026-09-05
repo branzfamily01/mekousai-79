@@ -6,7 +6,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 
 (() => {
   const VERSION = '20260903-bgm-programs-3';
-  const PHOTO_VERSION = '20260905-ops4';
+  const PHOTO_VERSION = '20260905-ops6';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
     const script = document.createElement('script');
