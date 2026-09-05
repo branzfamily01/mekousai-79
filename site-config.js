@@ -25,6 +25,7 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   // iPhone/Safariの旧キャッシュを避け、今回の修正版を確実に読む。
   loadCss(`styles-07.css?v=${VERSION}`);
   loadCss(`gallery-ops.css?v=${PHOTO_VERSION}`);
+  loadCss(`photo-simple.css?v=${PHOTO_VERSION}`);
   load(`site-corrections.js?v=${VERSION}`);
   load('site-remove-chorus.js');
   load(`bgm-continuity.js?v=${VERSION}`);
