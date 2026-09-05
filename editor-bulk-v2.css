@@ -1,0 +1,84 @@
+/* 2026-09-05: one selection checkbox per photo + selected-photo bulk editor */
+.bulk-edit-panel {
+  margin:14px 0 18px;
+  padding:16px;
+  border:2px solid var(--gallery-ink);
+  background:#eef6ff;
+  box-shadow:4px 4px 0 rgba(24,23,22,.12);
+}
+.bulk-edit-panel[hidden] { display:none; }
+.bulk-edit-heading {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  align-items:end;
+  margin-bottom:14px;
+}
+.bulk-edit-heading span { font-size:.68rem; font-weight:900; letter-spacing:.12em; }
+.bulk-edit-heading h3 { margin:.2rem 0 0; font-size:1.3rem; }
+.bulk-edit-heading p { margin:0; font-size:.82rem; line-height:1.6; }
+.bulk-edit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.bulk-edit-grid .full { grid-column:1/-1; }
+
+.editor-photo-visual { position:relative; }
+.editor-select-label {
+  position:absolute;
+  top:6px;
+  left:6px;
+  z-index:4;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:34px;
+  padding:4px 8px;
+  border:2px solid #171615;
+  background:#fff;
+  font-size:.72rem;
+  font-weight:900;
+  cursor:pointer;
+  box-sizing:border-box;
+}
+.editor-select-label .editor-select-checkbox {
+  position:static;
+  width:20px;
+  height:20px;
+  margin:0;
+  accent-color:#1d63b8;
+}
+.editor-photo.is-selected .editor-select-label { background:#d9ebff; }
+.photo-visibility-pill {
+  position:absolute;
+  right:6px;
+  bottom:6px;
+  z-index:3;
+  padding:4px 7px;
+  border:1px solid #171615;
+  background:#fff;
+  font-size:.67rem;
+  font-weight:900;
+}
+.photo-visibility-pill.is-public { background:#e8f7ec; }
+.photo-visibility-pill.is-private { background:#eee; }
+
+.editor-card-field { display:grid; gap:4px; min-width:0; }
+.editor-card-field > span { font-size:.7rem; font-weight:900; opacity:.72; }
+.editor-card-field input,
+.editor-card-field select {
+  width:100%;
+  min-height:42px;
+  box-sizing:border-box;
+  border:1px solid #333;
+  background:#fff;
+  padding:8px;
+  font-size:16px;
+}
+.editor-photo-controls { align-content:start; }
+
+@media (max-width:760px) {
+  .bulk-edit-heading { grid-template-columns:1fr; gap:8px; }
+  .bulk-edit-grid { grid-template-columns:1fr; }
+  .bulk-edit-grid .full { grid-column:auto; }
+  .editor-select-label { min-height:32px; padding:3px 6px; }
+  .editor-select-label .editor-select-checkbox { width:19px; height:19px; }
+  .photo-visibility-pill { font-size:.62rem; }
+}
