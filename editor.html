@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f2eadf">
 <title>写真編集｜第79回 目高祭</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css?v=20260905-ops9"><link rel="stylesheet" href="editor-bulk-v2.css?v=20260905-ops5">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css?v=20260905-ops11"><link rel="stylesheet" href="editor-bulk-v2.css?v=20260905-ops5"><link rel="stylesheet" href="editor-group-cover.css?v=20260905-ops11">
 </head>
 <body class="editor-page">
 <main class="editor-shell">
@@ -18,12 +18,12 @@
       <div id="upload-queue" class="upload-queue" aria-live="polite"></div><label class="editor-row"><input id="upload-published" type="checkbox" checked> <strong>すぐ公開する</strong></label><p class="editor-note">選択した写真はすべて送信キューへ追加されます。長辺1800pxのJPEGへ変換し、位置情報などのEXIFメタデータを除去します。</p><div class="editor-progress" aria-hidden="true"><span id="upload-progress"></span></div><p id="upload-progress-text" class="editor-note upload-progress-text"></p><div class="editor-actions"><button id="upload-button" class="editor-button" type="submit">選んだ写真をまとめて公開</button><button id="logout-button" class="editor-button secondary" type="button">ログアウト</button></div>
     </form></section>
     <section class="editor-panel"><div class="editor-manage-head"><h2>投稿済み写真を編集</h2><div class="editor-manage-filters"><label class="editor-field"><span>表示カテゴリ</span><select id="manage-category"></select></label><label class="editor-field" id="manage-festival-group-field" hidden><span>当日の分類で絞り込み</span><select id="manage-festival-group"></select></label></div></div>
-      <p class="editor-note"><strong>写真の下にある「選択」だけが一括編集用チェックです。</strong> 当日の分類を1つに絞ると、各写真からそのフォルダの代表画像も選べます。</p>
+      <p class="editor-note"><strong>文化祭当日の代表画像は、1学年・2学年・3学年・部活動・その他・中夜祭ごとに独立して保存されます。</strong> 分類を1つに絞ると、現在の代表画像には「✓ 設定済み」と表示されます。</p>
       <div class="editor-bulk-toolbar" id="bulk-toolbar"><strong id="bulk-selection-count">0枚選択中</strong><div class="editor-bulk-actions"><button id="select-all-button" class="editor-button secondary" type="button">すべて選択</button><button id="clear-selection-button" class="editor-button secondary" type="button">選択解除</button><button id="bulk-publish-button" class="editor-button" type="button" disabled>まとめて公開</button><button id="bulk-unpublish-button" class="editor-button secondary" type="button" disabled>まとめて非公開</button></div></div>
       <section class="bulk-edit-panel" id="bulk-editor" hidden aria-label="選択写真の一括編集"><div class="bulk-edit-heading"><div><span>SELECTED PHOTOS</span><h3>選択した写真を一括編集</h3></div><p>指定した項目だけ変更します。空欄・「変更しない」の項目はそのままです。</p></div><div class="bulk-edit-grid"><label class="editor-field" id="bulk-group-field" hidden><span>当日の分類</span><select id="bulk-group"></select></label><label class="editor-field"><span>撮影日</span><input id="bulk-date" type="date"><small>空欄なら変更しません</small></label><label class="editor-field"><span>公開状態</span><select id="bulk-visibility"><option value="none">変更しない</option><option value="published">公開</option><option value="unpublished">非公開</option></select></label><label class="editor-field"><span>コメントの扱い</span><select id="bulk-caption-mode"><option value="none">変更しない</option><option value="replace">入力内容に置き換える</option><option value="clear">コメントを削除</option></select></label><label class="editor-field full"><span>一括コメント</span><textarea id="bulk-caption" maxlength="500" placeholder="選択した写真すべてに同じコメントを入れる場合に入力"></textarea></label></div><div class="editor-actions"><button id="bulk-apply-button" class="editor-button" type="button" disabled>選択中の写真に一括適用</button></div></section>
       <div class="editor-list" id="editor-list"></div>
     </section>
   </div>
 </main><div class="editor-toast" id="editor-toast" hidden></div>
-<script src="site-config.js"></script><script src="editor.js?v=20260905-ops4"></script><script src="editor-prep-restore.js?v=20260905-ops8"></script><script src="editor-chuyasai.js?v=20260905-ops6"></script><script src="editor-bulk-caption-fix.js?v=20260905-ops7"></script><script src="editor-group-cover.js?v=20260905-ops9"></script>
+<script src="site-config.js"></script><script src="editor.js?v=20260905-ops4"></script><script src="editor-prep-restore.js?v=20260905-ops8"></script><script src="editor-chuyasai.js?v=20260905-ops6"></script><script src="editor-bulk-caption-fix.js?v=20260905-ops7"></script><script src="editor-group-cover.js?v=20260905-ops11"></script>
 </body></html>
