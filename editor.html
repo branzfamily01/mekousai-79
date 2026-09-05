@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f2eadf">
 <title>写真編集｜第79回 目高祭</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="gallery-system.css"><link rel="stylesheet" href="gallery-ops.css?v=20260905-ops2">
 </head>
 <body class="editor-page">
 <main class="editor-shell">
@@ -19,11 +19,11 @@
         <label class="editor-field" id="upload-festival-group-field" hidden><span>当日の分類</span><select id="upload-festival-group"></select></label>
         <label class="editor-field"><span>撮影日</span><input id="upload-date" type="date"></label>
         <label class="editor-field full"><span>共通コメント（任意）</span><textarea id="upload-caption" maxlength="500" placeholder="必要なときだけ入力し、「全写真に適用」を押してください。"></textarea><small>入力しただけでは各写真へ反映しません。</small><button id="apply-common-caption" class="editor-button secondary editor-inline-button" type="button">選択中の全写真に適用</button></label>
-        <label class="editor-field full editor-filebox"><span>写真を選択（複数可）</span><input id="upload-files" type="file" accept="image/*" multiple required><small id="file-summary">未選択</small></label>
+        <label class="editor-field full editor-filebox"><span>写真を選択（複数可・追加選択できます）</span><input id="upload-files" type="file" accept="image/*" multiple><small id="file-summary">未選択</small></label>
       </div>
       <div id="upload-queue" class="upload-queue" aria-live="polite"></div>
       <label class="editor-row"><input id="upload-published" type="checkbox" checked> <strong>すぐ公開する</strong></label>
-      <p class="editor-note">選択した写真はすべて送信対象になります。内部では少数ずつ安全に処理します。長辺1800pxのJPEGへ変換し、位置情報などのEXIFメタデータを除去します。</p>
+      <p class="editor-note">選択した写真はすべて送信キューへ追加されます。必要なら写真選択を繰り返してから、一度にまとめて送信できます。R2への書き込みは安全のため順番に処理します。長辺1800pxのJPEGへ変換し、位置情報などのEXIFメタデータを除去します。</p>
       <div class="editor-progress" aria-hidden="true"><span id="upload-progress"></span></div><p id="upload-progress-text" class="editor-note upload-progress-text"></p>
       <div class="editor-actions"><button id="upload-button" class="editor-button" type="submit">選んだ写真をまとめて公開</button><button id="logout-button" class="editor-button secondary" type="button">ログアウト</button></div>
     </form></section>
@@ -36,6 +36,6 @@
   </div>
 </main>
 <div class="editor-toast" id="editor-toast" hidden></div>
-<script src="site-config.js"></script><script src="editor.js"></script>
+<script src="site-config.js"></script><script src="editor.js?v=20260905-ops2"></script>
 </body>
 </html>
