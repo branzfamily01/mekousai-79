@@ -1,4 +1,4 @@
-import galleryApi from './gallery-r2.js';
+import galleryApi from './gallery-r2-compat.js';
 
 export default {
   async fetch(request, env, ctx) {
