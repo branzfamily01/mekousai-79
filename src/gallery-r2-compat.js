@@ -21,8 +21,6 @@ export default {
       return setFestivalFolderCover(request, env, ctx, coverMatch[1]);
     }
 
-    // 準備期間の5分類は元のR2カテゴリをそのまま見せる。
-    // 文化祭当日のみ、未分類保持と中夜祭互換処理を行う。
     if (request.method === 'GET' && (path === '/api/photos' || path === '/api/admin/photos')) {
       const category = url.searchParams.get('category');
       if (category === 'festival-day') {
@@ -50,9 +48,15 @@ async function festivalFolders(request, env, ctx) {
     const items = photos.filter(photo => photo.festivalGroup === group && photo.published !== false);
     const savedId = await readCoverId(env, group);
     const chosen = items.find(photo => photo.id === savedId) || items[0] || null;
-    folders.push({ group, count: items.length, coverPhotoId: chosen?.id || null, coverUrl: chosen?.url || null });
+    folders.push({
+      group,
+      count: items.length,
+      configuredCoverPhotoId: savedId || null,
+      coverPhotoId: chosen?.id || null,
+      coverUrl: chosen?.url || null
+    });
   }
-  return json({ folders }, 200, 'public, max-age=30');
+  return json({ folders }, 200, 'no-store');
 }
 
 async function setFestivalFolderCover(request, env, ctx, group) {
