@@ -4,7 +4,7 @@
     const link=document.createElement('link'); link.rel='stylesheet'; link.href=href; document.head.appendChild(link);
   };
   addCss('styles-04.css');
-  addCss('styles-07.css');
+  addCss('styles-07.css?v=20260906-words-1');
   addCss('gallery-system.css');
   addCss('daynight.css');
 })();
