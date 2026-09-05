@@ -6,23 +6,23 @@ window.MEKOUSAI_CONFIG = Object.freeze({
 
 (() => {
   const VERSION = '20260903-bgm-programs-3';
-  const PHOTO_VERSION = '20260905-ops3';
+  const PHOTO_VERSION = '20260905-ops4';
   const load = (src) => {
     if (document.querySelector(`script[src="${src}"]`)) return;
-    const script=document.createElement('script');
-    script.src=src;
-    script.async=false;
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
     document.head.appendChild(script);
   };
   const loadCss = (href) => {
     if (document.querySelector(`link[href="${href}"]`)) return;
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href=href;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
     document.head.appendChild(link);
   };
 
-  // iPhone/Safariの旧キャッシュを避け、今回の修正版を確実に読む。
+  // iPhone/Safariの旧キャッシュを避け、修正版を確実に読む。
   loadCss(`styles-07.css?v=${VERSION}`);
   loadCss(`gallery-ops.css?v=${PHOTO_VERSION}`);
   loadCss(`photo-simple.css?v=${PHOTO_VERSION}`);
@@ -30,8 +30,4 @@ window.MEKOUSAI_CONFIG = Object.freeze({
   load('site-remove-chorus.js');
   load(`bgm-continuity.js?v=${VERSION}`);
   load(`bgm-player-v2.js?v=${VERSION}`);
-
-  if (/\/editor\.html$/.test(location.pathname)) {
-    load(`editor-simplify.js?v=${PHOTO_VERSION}`);
-  }
 })();
