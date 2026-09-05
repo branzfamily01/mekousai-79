@@ -20,37 +20,52 @@
 .bulk-edit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 .bulk-edit-grid .full { grid-column:1/-1; }
 
-.editor-photo-visual { position:relative; }
+/* Keep the photo itself completely visible. Selection controls live below it. */
+.editor-photo-visual {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:6px;
+}
+.editor-photo-visual > img {
+  display:block;
+  width:100%;
+  height:auto;
+}
 .editor-select-label {
-  position:absolute;
-  top:6px;
-  left:6px;
-  z-index:4;
-  display:inline-flex;
+  position:static !important;
+  inset:auto !important;
+  z-index:auto;
+  display:flex;
   align-items:center;
-  gap:5px;
-  min-height:34px;
-  padding:4px 8px;
+  justify-content:flex-start;
+  gap:7px;
+  width:100%;
+  min-height:38px;
+  padding:6px 8px;
   border:2px solid #171615;
   background:#fff;
-  font-size:.72rem;
+  font-size:.75rem;
   font-weight:900;
   cursor:pointer;
   box-sizing:border-box;
 }
 .editor-select-label .editor-select-checkbox {
-  position:static;
-  width:20px;
-  height:20px;
+  position:static !important;
+  inset:auto !important;
+  width:21px;
+  height:21px;
   margin:0;
+  flex:0 0 auto;
   accent-color:#1d63b8;
 }
 .editor-photo.is-selected .editor-select-label { background:#d9ebff; }
 .photo-visibility-pill {
-  position:absolute;
-  right:6px;
-  bottom:6px;
-  z-index:3;
+  position:static !important;
+  inset:auto !important;
+  z-index:auto;
+  align-self:flex-start;
   padding:4px 7px;
   border:1px solid #171615;
   background:#fff;
@@ -78,7 +93,7 @@
   .bulk-edit-heading { grid-template-columns:1fr; gap:8px; }
   .bulk-edit-grid { grid-template-columns:1fr; }
   .bulk-edit-grid .full { grid-column:auto; }
-  .editor-select-label { min-height:32px; padding:3px 6px; }
-  .editor-select-label .editor-select-checkbox { width:19px; height:19px; }
+  .editor-select-label { min-height:36px; padding:5px 7px; }
+  .editor-select-label .editor-select-checkbox { width:20px; height:20px; }
   .photo-visibility-pill { font-size:.62rem; }
 }
