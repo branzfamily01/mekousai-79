@@ -5,7 +5,7 @@
     const links=[...phaseNav.querySelectorAll('a')];
     const routes={
       '準備期間':'#preparation',
-      '文化祭当日':'gallery.html?category=festival-day',
+      '目高祭当日':'gallery.html?category=festival-day',
       '表彰・振り返り':'gallery.html?category=awards'
     };
     links.forEach(a=>{
