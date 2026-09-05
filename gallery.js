@@ -1,20 +1,50 @@
 (() => {
   const categories = {
-    'preparation': ['準備風景', 'PREPARATION', '教室装飾や企画会議。文化祭が形になっていく途中の景色。'],
-    'creation': ['制作の手元', 'MAKING', '看板、衣装、作品。目高祭をつくる手元に寄って見る。'],
+    preparation: ['準備風景', 'PREPARATION', '教室装飾や企画会議。文化祭が形になっていく途中の景色。'],
+    creation: ['制作の手元', 'MAKING', '看板、衣装、作品。目高祭をつくる手元に寄って見る。'],
     'after-school': ['放課後', 'AFTER SCHOOL', '授業が終わったあとの校内。仲間と試行錯誤する時間。'],
-    'rehearsal': ['リハーサル', 'REHEARSAL', '本番へ向けて、音・動き・段取りを重ねる。'],
+    rehearsal: ['リハーサル', 'REHEARSAL', '本番へ向けて、音・動き・段取りを重ねる。'],
     'final-prep': ['開催直前', 'FINAL PREP', '完成した教室と最後の仕上げ。開幕前の高揚感。'],
-    'festival-day': ['文化祭当日', 'FESTIVAL DAYS', 'ステージ、展示、模擬店。2日間の熱気と笑顔。'],
-    'awards': ['表彰・振り返り', 'AFTER THE FESTIVAL', '努力が実を結ぶ瞬間と、文化祭を終えたあとの言葉。']
+    'festival-day': ['文化祭当日', 'FESTIVAL DAYS', '1学年・2学年・3学年・部活動・その他に分けて、当日の熱気をお届けします。'],
+    awards: ['表彰・振り返り', 'AFTER THE FESTIVAL', '努力が実を結ぶ瞬間と、文化祭を終えたあとの言葉。']
   };
+  const festivalGroups = { grade1: '1学年', grade2: '2学年', grade3: '3学年', club: '部活動', other: 'その他' };
   const params = new URLSearchParams(location.search);
   const category = categories[params.get('category')] ? params.get('category') : 'preparation';
+  let festivalGroup = null;
+  if (category === 'festival-day') {
+    festivalGroup = festivalGroups[params.get('group')] ? params.get('group') : 'other';
+    if (!params.has('group')) {
+      const next = new URL(location.href);
+      next.searchParams.set('category', 'festival-day');
+      next.searchParams.set('group', festivalGroup);
+      history.replaceState(null, '', next);
+    }
+  }
+
   const [title, kicker, description] = categories[category];
-  document.title = `${title}｜第79回 目高祭`;
+  const groupLabel = festivalGroup ? festivalGroups[festivalGroup] : '';
+  document.title = `${title}${groupLabel ? `｜${groupLabel}` : ''}｜第79回 目高祭`;
   document.getElementById('gallery-title').textContent = title;
   document.getElementById('gallery-kicker').textContent = kicker;
   document.getElementById('gallery-description').textContent = description;
+
+  const folderNav = document.getElementById('festival-folder-nav');
+  if (category === 'festival-day' && folderNav) {
+    folderNav.hidden = false;
+    Object.entries(festivalGroups).forEach(([value, label]) => {
+      const a = document.createElement('a');
+      a.href = `gallery.html?category=festival-day&group=${encodeURIComponent(value)}`;
+      a.className = value === festivalGroup ? 'is-active' : '';
+      a.setAttribute('aria-current', value === festivalGroup ? 'page' : 'false');
+      const strong = document.createElement('strong');
+      strong.textContent = label;
+      const small = document.createElement('small');
+      small.textContent = value === festivalGroup ? '表示中' : '写真を見る';
+      a.append(strong, small);
+      folderNav.appendChild(a);
+    });
+  }
 
   const grid = document.getElementById('gallery-grid');
   const state = document.getElementById('gallery-state');
@@ -34,7 +64,7 @@
   const apiBase = String(cfg.apiBase || '').replace(/\/$/, '');
   const configured = apiBase && !apiBase.includes('REPLACE-WITH-WORKER');
 
-  const fmtDate = (value) => {
+  const fmtDate = value => {
     if (!value) return '';
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
     return m ? `${Number(m[2])}月${Number(m[3])}日` : value;
@@ -44,25 +74,27 @@
     grid.textContent = '';
     state.hidden = photos.length > 0;
     if (!photos.length) {
-      state.textContent = 'まだ写真はありません。写真が追加されると、ここに自動で並びます。';
-      total.textContent = '0 PHOTOS';
+      state.textContent = festivalGroup
+        ? `${groupLabel}の写真はまだありません。写真が追加されると、ここに自動で並びます。`
+        : 'まだ写真はありません。写真が追加されると、ここに自動で並びます。';
+      total.textContent = festivalGroup ? `${groupLabel}｜0 PHOTOS` : '0 PHOTOS';
       return;
     }
-    total.textContent = `${photos.length} PHOTOS`;
+    total.textContent = festivalGroup ? `${groupLabel}｜${photos.length} PHOTOS` : `${photos.length} PHOTOS`;
     photos.forEach((photo, index) => {
       const figure = document.createElement('figure');
       figure.className = 'gallery-card';
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.setAttribute('aria-label', `${index + 1}枚目の写真を拡大`);
+      const openButton = document.createElement('button');
+      openButton.type = 'button';
+      openButton.setAttribute('aria-label', `${index + 1}枚目の写真を拡大`);
       const img = document.createElement('img');
       img.src = photo.url;
       img.alt = photo.caption || `${title}の写真 ${index + 1}`;
       img.loading = index < 4 ? 'eager' : 'lazy';
       img.decoding = 'async';
-      button.appendChild(img);
-      button.addEventListener('click', () => open(index));
-      figure.appendChild(button);
+      openButton.appendChild(img);
+      openButton.addEventListener('click', () => open(index));
+      figure.appendChild(openButton);
       const caption = document.createElement('figcaption');
       if (photo.takenOn) {
         const time = document.createElement('time');
@@ -108,15 +140,15 @@
   closeBtn.addEventListener('click', close);
   prevBtn.addEventListener('click', () => move(-1));
   nextBtn.addEventListener('click', () => move(1));
-  lightbox.addEventListener('click', (event) => { if (event.target === lightbox) close(); });
-  document.addEventListener('keydown', (event) => {
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
+  document.addEventListener('keydown', event => {
     if (lightbox.hidden) return;
     if (event.key === 'Escape') close();
     if (event.key === 'ArrowLeft') move(-1);
     if (event.key === 'ArrowRight') move(1);
   });
-  lightbox.addEventListener('pointerdown', (event) => { pointerStart = event.clientX; });
-  lightbox.addEventListener('pointerup', (event) => {
+  lightbox.addEventListener('pointerdown', event => { pointerStart = event.clientX; });
+  lightbox.addEventListener('pointerup', event => {
     if (pointerStart === null) return;
     const delta = event.clientX - pointerStart;
     pointerStart = null;
@@ -129,9 +161,11 @@
     return;
   }
 
-  fetch(`${apiBase}/api/photos?category=${encodeURIComponent(category)}`, { headers: { Accept: 'application/json' } })
-    .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
-    .then((payload) => { photos = Array.isArray(payload.photos) ? payload.photos : []; render(); })
+  let endpoint = `${apiBase}/api/photos?category=${encodeURIComponent(category)}`;
+  if (festivalGroup) endpoint += `&group=${encodeURIComponent(festivalGroup)}`;
+  fetch(endpoint, { headers: { Accept: 'application/json' } })
+    .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+    .then(payload => { photos = Array.isArray(payload.photos) ? payload.photos : []; render(); })
     .catch(() => {
       state.hidden = false;
       state.className = 'gallery-error';
