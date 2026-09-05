@@ -2,7 +2,7 @@ import galleryApi from './gallery-r2.js';
 
 const PREP_CATEGORIES = ['preparation', 'creation', 'after-school', 'rehearsal', 'final-prep'];
 const PREP_SET = new Set(PREP_CATEGORIES);
-const FESTIVAL_GROUPS = new Set(['grade1', 'grade2', 'grade3', 'club', 'other']);
+const FESTIVAL_GROUPS = new Set(['grade1', 'grade2', 'grade3', 'club', 'other', 'chuyasai']);
 const META_ROOT = '_mekousai/meta';
 
 export default {
@@ -105,7 +105,9 @@ async function festivalPhotos(request, env, ctx, admin) {
 async function normalizedUpload(request, env, ctx) {
   const form = await request.clone().formData();
   const category = String(form.get('category') || '');
+  const requestedGroup = category === 'festival-day' ? String(form.get('festival_group') || '') : '';
   let changed = false;
+  let desiredGroup = null;
 
   if (PREP_SET.has(category) && category !== 'preparation') {
     form.set('category', 'preparation');
@@ -113,17 +115,28 @@ async function normalizedUpload(request, env, ctx) {
   }
 
   if (category === 'festival-day') {
-    const group = String(form.get('festival_group') || '');
-    if (!FESTIVAL_GROUPS.has(group)) {
-      return json({ error: '文化祭当日の写真は、学年・部活動・その他から分類を選んでください。' }, 400, 'no-store');
+    if (!FESTIVAL_GROUPS.has(requestedGroup)) {
+      return json({ error: '文化祭当日の写真は、学年・部活動・その他・中夜祭から分類を選んでください。' }, 400, 'no-store');
+    }
+    if (requestedGroup === 'chuyasai') {
+      form.set('festival_group', 'other');
+      desiredGroup = 'chuyasai';
+      changed = true;
     }
   }
 
-  if (!changed) return galleryApi.fetch(request, env, ctx);
-  const headers = new Headers(request.headers);
-  headers.delete('Content-Type');
-  const replacement = new Request(request.url, { method: 'POST', headers, body: form });
-  return galleryApi.fetch(replacement, env, ctx);
+  const forwarded = changed
+    ? new Request(request.url, { method: 'POST', headers: withoutContentType(request.headers), body: form })
+    : request;
+  const response = await galleryApi.fetch(forwarded, env, ctx);
+  if (!desiredGroup || !response.ok) return response;
+
+  const payload = await response.json();
+  const id = payload?.photo?.id;
+  if (!id) return json(payload, response.status, 'no-store');
+  await setRawFestivalGroup(env, id, desiredGroup);
+  if (payload.photo) payload.photo.festivalGroup = desiredGroup;
+  return json(payload, response.status, 'no-store');
 }
 
 async function normalizedPatch(request, env, ctx) {
@@ -131,15 +144,28 @@ async function normalizedPatch(request, env, ctx) {
   if (!body || typeof body !== 'object' || !Object.hasOwn(body, 'festivalGroup')) {
     return galleryApi.fetch(request, env, ctx);
   }
+
+  let desiredGroup = null;
   if (body.festivalGroup === '' || body.festivalGroup === null || body.festivalGroup === 'unassigned') {
     delete body.festivalGroup;
   } else if (!FESTIVAL_GROUPS.has(String(body.festivalGroup))) {
     return json({ error: '当日写真の分類が不正です。' }, 400, 'no-store');
+  } else if (body.festivalGroup === 'chuyasai') {
+    desiredGroup = 'chuyasai';
+    body.festivalGroup = 'other';
   }
+
   const headers = new Headers(request.headers);
   headers.set('Content-Type', 'application/json');
   const replacement = new Request(request.url, { method: 'PATCH', headers, body: JSON.stringify(body) });
-  return galleryApi.fetch(replacement, env, ctx);
+  const response = await galleryApi.fetch(replacement, env, ctx);
+  if (!desiredGroup || !response.ok) return response;
+
+  const id = request.url.match(/\/api\/photos\/([0-9a-f-]+)$/i)?.[1];
+  const payload = await response.json();
+  if (id) await setRawFestivalGroup(env, id, desiredGroup);
+  if (payload?.photo) payload.photo.festivalGroup = desiredGroup;
+  return json(payload, response.status, 'no-store');
 }
 
 async function rawFestivalGroup(env, id) {
@@ -151,6 +177,24 @@ async function rawFestivalGroup(env, id) {
   } catch {
     return null;
   }
+}
+
+async function setRawFestivalGroup(env, id, group) {
+  const key = `${META_ROOT}/festival-day/${id}.json`;
+  const object = await env.MEDIA.get(key);
+  if (!object) return;
+  const meta = await object.json();
+  meta.festivalGroup = group;
+  meta.updatedAt = new Date().toISOString();
+  await env.MEDIA.put(key, JSON.stringify(meta), {
+    httpMetadata: { contentType: 'application/json; charset=utf-8' }
+  });
+}
+
+function withoutContentType(source) {
+  const headers = new Headers(source);
+  headers.delete('Content-Type');
+  return headers;
 }
 
 function sortPhotos(a, b) {
