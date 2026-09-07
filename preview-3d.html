@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>目高祭 3Dデザイン プレビュー</title>
+<style>
+html,body{margin:0;height:100%;background:#171717;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.previewbar{height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px;background:#171717;color:#fff;font-size:12px;font-weight:800;letter-spacing:.04em}
+.previewbar strong{font-size:13px}.previewbar a{color:#171717;background:#ffd540;text-decoration:none;border-radius:999px;padding:7px 11px;font-weight:900}
+iframe{display:block;width:100%;height:calc(100% - 44px);border:0;background:#f2eadf}
+@media(max-width:560px){.previewbar{height:50px;padding:0 10px}.previewbar span{display:none}iframe{height:calc(100% - 50px)}}
+</style>
+</head>
+<body>
+<div class="previewbar"><strong>3D / 洗練プレビュー</strong><span>本番ページは変更していません</span><a href="/">通常版へ戻る</a></div>
+<iframe id="site" src="/" title="目高祭 3Dプレビュー"></iframe>
+<script>
+(() => {
+  const frame=document.getElementById('site');
+  frame.addEventListener('load',()=>{
+    try{
+      const doc=frame.contentDocument;
+      if(!doc)return;
+      const css=doc.createElement('link');
+      css.rel='stylesheet';
+      css.href='/styles-enhance-3d-preview.css?v=20260907-preview1';
+      doc.head.appendChild(css);
+      const js=doc.createElement('script');
+      js.src='/enhance-3d-preview.js?v=20260907-preview1';
+      doc.body.appendChild(js);
+    }catch(err){console.error('preview inject failed',err)}
+  });
+})();
+</script>
+</body>
+</html>
